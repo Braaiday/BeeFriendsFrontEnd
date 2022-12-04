@@ -7,15 +7,17 @@ import "./App.scss";
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<PageHome />} />
-            <Route path=":id" element={<PageChatRoom />} />
-            <Route path="*" element={<div>No Match</div>} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <div className="light">
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<PageHome />} />
+              <Route path=":id" element={<PageChatRoom />} />
+              <Route path="*" element={<div>No Match</div>} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </div>
     </div>
   );
 }

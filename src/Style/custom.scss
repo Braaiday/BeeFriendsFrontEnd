@@ -1,16 +1,16 @@
-// Custom css
+//Themes
+div.dark {
+    @import './Themes/dark.scss';
+}
+
+div.light {
+    @import './Themes/light.scss';
+}
+
+div.glass {
+    @import './Themes/glass.scss';
+}
+
+// Pages Custom CSS
 @import "../Components/Pages/Layout/Layout.scss";
 
-
-
-// Bootstrap css
-
-/* The following block can be included in a custom.scss */
-
-/* make the customizations */
-$theme-colors: (
-    "info": tomato,
-    "danger": teal
-);
-
-@import "~bootstrap/scss/bootstrap";

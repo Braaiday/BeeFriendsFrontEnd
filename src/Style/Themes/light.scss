@@ -1,0 +1,16 @@
+/* make the customizations */
+$white: #ffffff;
+
+$theme-colors: (
+    "light": #d9eafa,
+    "dark": #0e0d0e,
+    "primary": #3f0695,
+    "secondary": #96716c,
+    "info": #c8d8d5,
+    "success": #09ad67,
+    "warning": #e2ce08,
+    "danger": #f22403,
+);
+
+// Bootstrap css
+@import "~bootstrap/scss/bootstrap";
