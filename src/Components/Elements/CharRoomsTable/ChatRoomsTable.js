@@ -1,9 +1,10 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
-import Table from 'react-bootstrap/Table'; 
+import Table from 'react-bootstrap/Table';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { setRoom } from '../../../reducers/roomSlice';
 ;
 
 export default function ChatRoomsTable() {
@@ -20,15 +21,20 @@ export default function ChatRoomsTable() {
         });
     }, [])
 
+    const joinChatRoom = (chatroom) => {
+        dispatch(setRoom(chatroom.name))
+        navigate(`room/${chatroom.id}`)
+    }
+
     function mapChatRooms() {
         return chatRooms.map(chatroom =>
-            <tr>
+            <tr key={chatroom.id}>
                 <td>{chatroom.name}</td>
-                <td><Button>Join Room</Button></td>
+                <td><Button onClick={() => joinChatRoom(chatroom)}>Join Room</Button></td>
             </tr>
         )
     }
-    
+
     return (
         <>
             <Row>

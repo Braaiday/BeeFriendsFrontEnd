@@ -1,18 +1,33 @@
+import axios from 'axios';
 import React, { useRef } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { setRoom } from '../../../reducers/roomSlice';
 
 export default function CreateChatRoom({ isOpen, closeModal }) {
 
     // Hooks
     const roomname = useRef();
     const username = useSelector(state => state.user.name);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleClose = (event) => {
+        
         event.preventDefault();
-        closeModal();
+        let request = {name: roomname.current.value};
+        axios.post(`${process.env.REACT_APP_API_URL}/api/CreateChatRoom`, request)
+        .then((response) => {
+            dispatch(setRoom(response.data.name));
+            navigate(`room/${response.data.id}`)
+            closeModal();
+        })
+        .catch((response) => {
+            window.alert("unable to create chat room" + {response});
+        });
     }
-
+    
     return (
         <Modal show={isOpen} >
             <Form onSubmit={handleClose}>

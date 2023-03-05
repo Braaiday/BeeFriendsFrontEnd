@@ -12,9 +12,10 @@ function App() {
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<PageHome />} />
-              <Route path=":id" element={<PageChatRoom />} />
-              <Route path="*" element={<div>No Match</div>} />
+              <Route path="/room" element={<PageChatRoom />} />
+              <Route path="/room/:id" element={<PageChatRoom />} />
             </Route>
+            <Route path="*" element={<div>No Match</div>} />
           </Routes>
         </BrowserRouter>
       </div>
