@@ -14,6 +14,7 @@ export default function UserModal({ isOpen }) {
         dispatch(setUser(name.current.value));
         setShow(false);
     }
+    
     return (
         <>
             <Modal show={show}>

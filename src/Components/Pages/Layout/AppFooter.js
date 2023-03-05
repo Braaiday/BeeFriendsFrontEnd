@@ -4,7 +4,7 @@ export default function AppFooter() {
 
     return (
         <div className='d-flex justify-content-center'>
-            Footer
+            Enjoy Chatting
         </div>
     )
 }
