@@ -93,7 +93,7 @@ export default function PageChatRoom() {
   }
 
   const handleMessagesUpdates = (username, message) => {
-    if (message === username + " is typing...") {
+    if (message === username + " is typing") {
       setTypingUsers(messages => [...messages, { user: username, message }])
     }
     else if (message === "") {

@@ -23,7 +23,7 @@ export default function ChatBox({ sendMessage, messages, userIsTyping, typingUse
     }, [messages])
 
     const userIsTypingSomething = () => {
-        let isAlreadyTyping = typingUsers.find(m => m.message === user + " is typing...")
+        let isAlreadyTyping = typingUsers.find(m => m.message === user + " is typing")
         if (message.current.value.length === 1 && !isAlreadyTyping) userIsTyping();
         if (message.current.value.length === 0 && isAlreadyTyping) userStopedTyping();
     }
@@ -47,7 +47,7 @@ export default function ChatBox({ sendMessage, messages, userIsTyping, typingUse
                                 </InputGroup>
                             </Form>
                         </Card.Footer>
-                        <div>{typingUsers.map(user => user.message)} </div>
+                        {typingUsers.map(user => <p className='loading'>{user.message}</p>)}
                     </Card>
                 </Col>
             </Row>
