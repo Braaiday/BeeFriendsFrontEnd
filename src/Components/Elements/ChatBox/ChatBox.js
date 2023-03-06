@@ -25,7 +25,6 @@ export default function ChatBox({ sendMessage, messages, userIsTyping, typingUse
     const userIsTypingSomething = () => {
         let isAlreadyTyping = typingUsers.find(m => m.message === user + " is typing...")
         if (message.current.value.length === 1 && !isAlreadyTyping) userIsTyping();
-        debugger
         if (message.current.value.length === 0 && isAlreadyTyping) userStopedTyping();
     }
 

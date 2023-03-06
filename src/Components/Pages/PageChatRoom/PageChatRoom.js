@@ -36,7 +36,6 @@ export default function PageChatRoom() {
   }, []);
 
   useEffect(() => {
-    debugger
     if (connection) {
       joinRoom();
     }
@@ -94,7 +93,6 @@ export default function PageChatRoom() {
   }
 
   const handleMessagesUpdates = (username, message) => {
-    debugger
     if (message === username + " is typing...") {
       setTypingUsers(messages => [...messages, { user: username, message }])
     }
