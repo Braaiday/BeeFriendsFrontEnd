@@ -4,9 +4,9 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useSelector } from 'react-redux';
 
-export default function ChatBox({ sendMessage, messages }) {
+export default function ChatBox({ sendMessage, messages, userIsTyping, typingUsers, userStopedTyping }) {
     const roomName = useSelector(state => state.room.name);
-    const name = useSelector(state => state.user.name);
+    const user = useSelector(state => state.user.name);
     const message = useRef();
 
     const send = async (event) => {
@@ -15,11 +15,20 @@ export default function ChatBox({ sendMessage, messages }) {
             window.alert("please supply a message")
         }
         sendMessage(message.current.value);
+        message.current.value = '';
     }
 
     const localmessages = useMemo(() => {
         return messages.map((item, i) => <><p key={i}>{item.message}</p></>)
     }, [messages])
+
+    const userIsTypingSomething = () => {
+        let isAlreadyTyping = typingUsers.find(m => m.message === user + " is typing...")
+        if (message.current.value.length === 1 && !isAlreadyTyping) userIsTyping();
+        debugger
+        if (message.current.value.length === 0 && isAlreadyTyping) userStopedTyping();
+    }
+
     return (
         <Container>
             <Row>
@@ -35,10 +44,11 @@ export default function ChatBox({ sendMessage, messages }) {
                             <Form onSubmit={send}>
                                 <InputGroup>
                                     <InputGroup.Text ><button type='submit'>Send</button></InputGroup.Text>
-                                    <Form.Control as="textarea" aria-label="With textarea" ref={message} />
+                                    <Form.Control as="textarea" aria-label="With textarea" ref={message} onChange={userIsTypingSomething} />
                                 </InputGroup>
                             </Form>
                         </Card.Footer>
+                        <div>{typingUsers.map(user => user.message)} </div>
                     </Card>
                 </Col>
             </Row>

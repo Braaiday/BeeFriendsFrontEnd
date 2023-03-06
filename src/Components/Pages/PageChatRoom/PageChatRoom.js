@@ -1,4 +1,5 @@
 import { HubConnectionBuilder } from '@microsoft/signalr';
+import { cloneDeep } from 'lodash';
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,8 +12,8 @@ import UserList from '../../Elements/UserList/UserList';
 export default function PageChatRoom() {
   const user = useSelector(state => state.user.name);
   const [messages, setMessages] = useState([]);
+  const [typingUsers, setTypingUsers] = useState([]);
   const room = useSelector(state => state.room.name);
-  const users = useSelector(state => state.room.users);
   const [connection, setConnection] = useState(null);
 
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ export default function PageChatRoom() {
 
   const joinRoom = async () => {
     connection.on("ReceiveMessage", (user, message) => {
-      setMessages(messages => [...messages, { user, message }]);
+      handleMessagesUpdates(user, message)
     });
 
     connection.on("UsersInRoom", (users) => {
@@ -76,6 +77,35 @@ export default function PageChatRoom() {
     }
   }
 
+  const userIsTyping = async () => {
+    try {
+      await connection.invoke("IsTypingMessage");
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  const userStopedTyping = async () => {
+    try {
+      await connection.invoke("UserStopedTyping");
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  const handleMessagesUpdates = (username, message) => {
+    debugger
+    if (message === username + " is typing...") {
+      setTypingUsers(messages => [...messages, { user: username, message }])
+    }
+    else if (message === "") {
+      setTypingUsers(messages => messages.filter(m => m.user !== username))
+    }
+    else {
+      setMessages(messages => [...messages, { user: username, message }]);
+      setTypingUsers(messages => messages.filter(m => m.user !== username))
+    }
+  }
 
   return (
     <div>
@@ -96,7 +126,7 @@ export default function PageChatRoom() {
       <br />
       <div className='d-flex'>
         <UserList />
-        <ChatBox className="flex" sendMessage={sendMessage} messages={messages} />
+        <ChatBox className="flex" sendMessage={sendMessage} messages={messages} userIsTyping={userIsTyping} typingUsers={typingUsers} userStopedTyping={userStopedTyping} />
       </div>
     </div>
 
