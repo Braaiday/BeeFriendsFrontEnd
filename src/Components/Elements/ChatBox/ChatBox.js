@@ -19,7 +19,7 @@ export default function ChatBox({ sendMessage, messages, userIsTyping, typingUse
     }
 
     const localmessages = useMemo(() => {
-        return messages.map((item, i) => <><p key={i}>{item.message}</p></>)
+        return messages.map((item, i) => <><p key={i}>{`${item.user}: `}{item.message}</p></>)
     }, [messages])
 
     const userIsTypingSomething = () => {
