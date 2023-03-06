@@ -4,6 +4,7 @@ import PageChatRoom from "./Components/Pages/PageChatRoom/PageChatRoom";
 import PageHome from "./Components/Pages/PageHome/PageHome";
 import "./App.scss";
 
+// https://beefriends-api.onrender.com
 function App() {
   return (
     <div className="App">
