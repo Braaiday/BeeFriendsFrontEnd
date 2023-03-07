@@ -4,6 +4,7 @@ import ChatRoomsTable from '../../Elements/CharRoomsTable/ChatRoomsTable'
 import UserModal from '../../Elements/UserModal/UserModal';
 import { Button } from 'react-bootstrap';
 import CreateChatRoom from '../../Elements/CreateChatRoom/CreateChatRoom';
+import { setUser } from '../../../reducers/userSlice';
 
 export default function PageHome() {
 
