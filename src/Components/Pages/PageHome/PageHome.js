@@ -17,13 +17,6 @@ export default function PageHome() {
   // User
   const user = useSelector(state => state.user.name)
 
-  useEffect(() => {
-    let name = localStorage.getItem('name')
-    if (name) {
-      dispatch(setUser(name));
-    }
-  }, [])
-
   return (
     <div>
       {user === null
