@@ -5,6 +5,7 @@ import { Button, Col, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setUsers } from '../../../reducers/roomSlice';
+import { toggleSpinner } from '../../../reducers/spinnerSlice';
 import ChatBox from '../../Elements/ChatBox/ChatBox';
 import UserList from '../../Elements/UserList/UserList';
 
@@ -42,6 +43,7 @@ export default function PageChatRoom() {
   }, [connection])
 
   const joinRoom = async () => {
+    dispatch(toggleSpinner());
     connection.on("ReceiveMessage", (user, message) => {
       handleMessagesUpdates(user, message)
     });
@@ -58,7 +60,7 @@ export default function PageChatRoom() {
 
     await connection.start();
     await connection.invoke("JoinRoom", { user, room });
-    
+    dispatch(toggleSpinner());
   }
 
   const sendMessage = async (message) => {
