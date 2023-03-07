@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import ChatRoomsTable from '../../Elements/CharRoomsTable/ChatRoomsTable'
 import UserModal from '../../Elements/UserModal/UserModal';
@@ -15,6 +15,13 @@ export default function PageHome() {
 
   // User
   const user = useSelector(state => state.user.name)
+
+  useEffect(() => {
+    let name = localStorage.getItem('name')
+    if (name) {
+      dispatch(setUser(name));
+    }
+  }, [])
 
   return (
     <div>

@@ -12,6 +12,7 @@ export default function UserModal({ isOpen }) {
 
     const handleClose = () => {
         dispatch(setUser(name.current.value));
+        localStorage.setItem('name', name.current.value);
         setShow(false);
     }
     
