@@ -9,6 +9,7 @@ export default function ChatBox({ sendMessage, messages, userIsTyping, typingUse
     const user = useSelector(state => state.user.name);
     const message = useRef();
     const messagesEndRef = useRef()
+    const regExp = /[a-zA-Z]/g;
 
     const send = async (event) => {
         event.preventDefault();
@@ -31,9 +32,9 @@ export default function ChatBox({ sendMessage, messages, userIsTyping, typingUse
     }
 
     useEffect(() => {
-        debugger
         scrollToBottom();
     }, [localmessages])
+
     return (
         <Container>
             <Row>
@@ -56,7 +57,7 @@ export default function ChatBox({ sendMessage, messages, userIsTyping, typingUse
                                         ref={message}
                                         onChange={userIsTypingSomething}
                                         onKeyDown={(e) => {
-                                            var regExp = /[a-zA-Z]/g;
+
                                             if (e.code === "Enter" && regExp.test(message.current.value)) {
                                                 e.preventDefault();
                                                 sendMessage(message.current.value);
@@ -72,12 +73,16 @@ export default function ChatBox({ sendMessage, messages, userIsTyping, typingUse
                                             e.preventDefault();
                                             userStopedTyping();
                                         }}
+                                        onFocus={(e) => {
+                                            e.preventDefault();
+                                            if (regExp.test(message.current.value)) userIsTyping();
+                                        }}
                                     />
                                 </InputGroup>
                             </Form>
                         </Card.Footer>
                     </Card>
-                    {typingUsers.map(user => <p className='loading'>{user.message}</p>)}
+                    {typingUsers.map(user => <p className='loading mr-1'>{user.message}</p>)}
                 </Col>
             </Row>
         </Container>
