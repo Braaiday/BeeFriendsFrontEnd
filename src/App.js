@@ -3,11 +3,13 @@ import Layout from "./Components/Pages/Layout/Layout";
 import PageChatRoom from "./Components/Pages/PageChatRoom/PageChatRoom";
 import PageHome from "./Components/Pages/PageHome/PageHome";
 import "./App.scss";
+import AppSpinner from "./Components/Elements/AppSpinner/AppSpinner";
 
 function App() {
   return (
     <div className="App">
       <div className="light">
+        <AppSpinner/>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Layout />}>

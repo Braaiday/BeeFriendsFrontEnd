@@ -5,6 +5,7 @@ import Table from 'react-bootstrap/Table';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setRoom } from '../../../reducers/roomSlice';
+import { toggleSpinner } from '../../../reducers/spinnerSlice';
 ;
 
 export default function ChatRoomsTable() {
@@ -16,9 +17,12 @@ export default function ChatRoomsTable() {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        dispatch(toggleSpinner());
         axios.get(`${process.env.REACT_APP_API_URL}/api/ChatRoom`).then((response) => {
+            dispatch(toggleSpinner());
             setChatRooms(response.data);
-        });
+        })
+        .catch((error) => dispatch(toggleSpinner()))
     }, [])
 
     const joinChatRoom = (chatroom) => {
