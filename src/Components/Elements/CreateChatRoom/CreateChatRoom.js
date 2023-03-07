@@ -24,12 +24,12 @@ export default function CreateChatRoom({ isOpen, closeModal }) {
             dispatch(setRoom(response.data.name));
             navigate(`room/${response.data.id}`);
             dispatch(toggleSpinner());
-            closeModal();
         })
         .catch((response) => {
             window.alert("unable to create chat room" + {response});
             dispatch(toggleSpinner());
         });
+        closeModal();
     }
     
     return (

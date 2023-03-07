@@ -1,26 +1,50 @@
-div.AppSpinner{
-    .loading-overlay {
-        display: none;
-        background: rgba(255, 255, 255, 0.7);
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        top: 0;
-        z-index: 9998;
-        align-items: center;
-        justify-content: center;
-      }
-      
-      .loading-overlay.is-active {
-        display: flex;
-      }
-      
-      .code {
-        font-family: monospace;
-      /*   font-size: .9em; */
-        color: #dd4a68;
-        background-color: rgb(238, 238, 238);
-        padding: 0 3px;
-      } 
+div.AppSpinner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba($color: #000000, $alpha: .8);
+
+    .spinner {
+        position: relative;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+    }
+
+    .spinner:before,
+    .spinner:after {
+        content: "";
+        position: absolute;
+        border-radius: inherit;
+    }
+
+    .spinner:before {
+        width: 100%;
+        height: 100%;
+        background-image: linear-gradient(0deg, #009efd 0%, #2af598 100%);
+        animation: spin 1s infinite linear;
+    }
+
+    .spinner:after {
+        width: 85%;
+        height: 85%;
+        background-color: #151515;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
 }
