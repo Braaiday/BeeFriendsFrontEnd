@@ -16,6 +16,7 @@ export default function PageChatRoom() {
   const [typingUsers, setTypingUsers] = useState([]);
   const room = useSelector(state => state.room.name);
   const [connection, setConnection] = useState(null);
+  const apiIsLoading = useSelector(state => state.spinner.isLoading);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -126,8 +127,12 @@ export default function PageChatRoom() {
       <br />
       <br />
       <div className='d-flex'>
-        <UserList />
-        <ChatBox className="flex" sendMessage={sendMessage} messages={messages} userIsTyping={userIsTyping} typingUsers={typingUsers} userStopedTyping={userStopedTyping} />
+        {apiIsLoading &&
+          <>
+            <UserList />
+            <ChatBox className="flex" sendMessage={sendMessage} messages={messages} userIsTyping={userIsTyping} typingUsers={typingUsers} userStopedTyping={userStopedTyping} />
+          </>
+        }
       </div>
     </div>
 
