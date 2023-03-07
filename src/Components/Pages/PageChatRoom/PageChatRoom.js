@@ -1,10 +1,11 @@
 import { HubConnectionBuilder } from '@microsoft/signalr';
+import axios from 'axios';
 import { cloneDeep } from 'lodash';
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { setUsers } from '../../../reducers/roomSlice';
+import { useNavigate, useParams } from 'react-router-dom';
+import { setRoom, setUsers } from '../../../reducers/roomSlice';
 import { toggleSpinner } from '../../../reducers/spinnerSlice';
 import ChatBox from '../../Elements/ChatBox/ChatBox';
 import UserList from '../../Elements/UserList/UserList';
@@ -17,6 +18,7 @@ export default function PageChatRoom() {
   const room = useSelector(state => state.room.name);
   const [connection, setConnection] = useState(null);
   const apiIsLoading = useSelector(state => state.spinner.isLoading);
+  const {id} = useParams();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -36,6 +38,18 @@ export default function PageChatRoom() {
       closeConnection();
     }
   }, []);
+
+  useEffect(() => {
+    if (room === null) {
+      debugger
+      axios.get(`${process.env.REACT_APP_API_URL}/api/ChatRoom`).then((response) => {
+        dispatch(toggleSpinner());
+        let foundRoom = response.data.find(chat => chat.id === Number(id))
+        dispatch(setRoom(foundRoom.name))
+      })
+        .catch((error) => dispatch(toggleSpinner()))
+    }
+  }, [])
 
   useEffect(() => {
     if (connection) {

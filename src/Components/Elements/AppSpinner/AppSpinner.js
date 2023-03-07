@@ -8,7 +8,7 @@ export default function AppSpinner() {
             {apiIsLoading &&
                 <div className='AppSpinner'>
 
-                    <div class="spinner"></div>
+                    <div className="spinner"></div>
 
                 </div>
             }
