@@ -127,7 +127,7 @@ export default function PageChatRoom() {
       <br />
       <br />
       <div className='d-flex'>
-        {apiIsLoading &&
+        {!apiIsLoading &&
           <>
             <UserList />
             <ChatBox className="flex" sendMessage={sendMessage} messages={messages} userIsTyping={userIsTyping} typingUsers={typingUsers} userStopedTyping={userStopedTyping} />
