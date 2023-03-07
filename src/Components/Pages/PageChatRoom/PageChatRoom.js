@@ -58,6 +58,7 @@ export default function PageChatRoom() {
 
     await connection.start();
     await connection.invoke("JoinRoom", { user, room });
+    
   }
 
   const sendMessage = async (message) => {
