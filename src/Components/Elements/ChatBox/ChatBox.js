@@ -20,7 +20,6 @@ export default function ChatBox({ sendMessage, messages, userIsTyping, typingUse
     const localmessages = useMemo(() => {
 
         return messages.map((item, i) => {
-            debugger
             if (item.user === "MyChat Bot") {
                 return <><p key={i}>{item.message}</p></>
             } else {
@@ -51,19 +50,20 @@ export default function ChatBox({ sendMessage, messages, userIsTyping, typingUse
                         <Card.Header>
                             You are chatting in {roomName}
                         </Card.Header>
-                        <Card.Body className='h-75 d-inline-block overflow-scroll pb-20'>
+                        <Card.Body className='h-75 d-inline-block pb-20 custom-scroll-container'>
                             {localmessages}
                             <div ref={messagesEndRef} />
                         </Card.Body>
                         <Card.Footer>
                             <Form onSubmit={send}>
                                 <InputGroup>
-                                    <InputGroup.Text ><button type='submit'>Send</button></InputGroup.Text>
+                                    <InputGroup.Text ><button className='custom-button' type='submit'>Send</button></InputGroup.Text>
                                     <Form.Control as="textarea"
                                         aria-label="With textarea"
                                         required
                                         ref={message}
                                         onChange={userIsTypingSomething}
+                                        className="custom-text-area"
                                         onKeyDown={(e) => {
 
                                             if (e.code === "Enter" && regExp.test(message.current.value)) {

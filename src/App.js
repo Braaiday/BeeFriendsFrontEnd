@@ -6,6 +6,8 @@ import AppSpinner from "./Components/Elements/AppSpinner/AppSpinner";
 import { useDispatch } from "react-redux";
 import { setUser } from "./reducers/userSlice";
 import { useEffect } from "react";
+import useTheme from "./Style/ThemeContext/useTheme";
+import ThemeChanger from "./Style/ThemeContext/ThemeChanger";
 
 function App() {
   const dispatch = useDispatch();
@@ -15,11 +17,15 @@ function App() {
     if (name) {
       dispatch(setUser(name));
     }
-  }, [])
+  }, []);
+
+  const { theme } = useTheme();
+
   return (
-    <div className="App">
-      <div className="light">
-        <AppSpinner/>
+    <div className={theme}>
+      <div className="App">
+        <ThemeChanger />
+        <AppSpinner />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Layout />}>

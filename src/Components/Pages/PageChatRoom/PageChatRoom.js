@@ -41,7 +41,6 @@ export default function PageChatRoom() {
 
   useEffect(() => {
     if (room === null) {
-      debugger
       axios.get(`${process.env.REACT_APP_API_URL}/api/ChatRoom`).then((response) => {
         dispatch(toggleSpinner());
         let foundRoom = response.data.find(chat => chat.id === Number(id))

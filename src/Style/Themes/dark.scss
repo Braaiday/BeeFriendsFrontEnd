@@ -2,16 +2,13 @@
 $white: #ffffff;
 
 $theme-colors: (
-    "light": #d3d9df,
-    "dark": #12151d,
-    "primary": #3a394f,
-    "secondary": #ed3d22,
-    "info": #f3385d,
-    "success": #159e5e,
-    "warning": #dfca16,
-    "danger": #ec2209,
+    "light": #d9eafa,
+    "dark": #0e0d0e,
+    "primary": #3f0695,
+    "secondary": #96716c,
+    "info": #c8d8d5,
+    "success": #09ad67,
+    "warning": #e2ce08,
+    "danger": #f22403,
 );
-
-
-// Bootstrap css
 @import "~bootstrap/scss/bootstrap";
