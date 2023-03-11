@@ -18,7 +18,7 @@ export default function PageChatRoom() {
   const room = useSelector(state => state.room.name);
   const [connection, setConnection] = useState(null);
   const apiIsLoading = useSelector(state => state.spinner.isLoading);
-  const {id} = useParams();
+  const { id } = useParams();
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -68,7 +68,7 @@ export default function PageChatRoom() {
     });
 
     connection.onclose(e => {
-      setConnection();
+      setConnection(null);
       setMessages([]);
       dispatch(setUsers([]));
     });
