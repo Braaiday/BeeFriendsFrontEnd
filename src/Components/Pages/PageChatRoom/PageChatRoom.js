@@ -47,7 +47,30 @@ export default function PageChatRoom() {
         dispatch(setRoom(foundRoom.name))
       })
         .catch((error) => dispatch(toggleSpinner()))
+
+
+
     }
+    debugger
+    let request = {
+      Id: id
+    }
+    axios.post(`${process.env.REACT_APP_API_URL}/api/GetChatHistory`, request)
+      .then((response) => {
+        debugger
+        let mapMessages = [];
+        response.data.forEach((item) => {
+          let newMessage = {
+            message: item.userMessage,
+            user: item.user
+          }
+          mapMessages.push(newMessage)
+        })
+        setMessages(mapMessages);
+      })
+      .catch((error) => {
+
+      })
   }, [])
 
   useEffect(() => {
