@@ -1,3 +1,7 @@
+# Simple Anonymous Chat Room App 
+
+Feel free to visit (https://beefriends-py31.onrender.com) to try it out.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
