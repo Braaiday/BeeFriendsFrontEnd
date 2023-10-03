@@ -2,71 +2,11 @@
 div.dark {
     @import './Themes/dark.scss';
 
-    .App {
-        background-color: #292b2e;
-        color: rgb(196, 183, 183);
-        height: 100vh;
-        
-        .card {
-            background-color: #38383b;
-        }
-
-        .card-header {
-            background-color: #38383b;
-        }
-
-        .card-body {
-            background-color: #38383b;
-        }
-
-        .container {
-            background-color: #38383b;
-        }
-
-        p {
-            color: rgb(196, 183, 183);
-        }
-
-        tr {
-            color: rgb(196, 183, 183);
-        }
-
-        th {
-            color: rgb(196, 183, 183);
-        }
-
-        td {
-            color: rgb(196, 183, 183) !important;
-        }
-
-        .input-group-text {
-            background-color: #292b2e;
-        }
-
-        .custom-button {
-            background-color: #292b2e;
-            color: rgb(196, 183, 183);
-        }
-
-        .custom-text-area {
-            background-color: #b5bac28a;
-            color: rgb(196, 183, 183);
-        }
-
-        .custom-scroll-container {
-            overflow: scroll;
-            overflow-x: hidden;
-            overflow-y: auto;
-        }
-    }
 }
 
 div.light {
     @import './Themes/light.scss';
-
-    .App {}
 }
-
 
 //Highest Level styles
 @import "./index.scss";

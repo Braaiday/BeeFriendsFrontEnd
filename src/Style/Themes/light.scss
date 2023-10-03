@@ -2,13 +2,24 @@
 $white: #ffffff;
 
 $theme-colors: (
-    "light": #d9eafa,
-    "dark": #0e0d0e,
-    "primary": #3f0695,
-    "secondary": #96716c,
-    "info": #c8d8d5,
-    "success": #09ad67,
-    "warning": #e2ce08,
-    "danger": #f22403,
+    "light": #a2afb8,
+    "dark": #353878,
+    "primary": #cc4d1c,
+    "secondary": #ad9a95,
+    "info": #fceddb,
+    "success": #70c61b,
+    "warning": #fecb8d,
+    "danger": #fe1a6c,
 );
-@import "~bootstrap/scss/bootstrap";
+
+$light: map-get($theme-colors, "light");
+$dark: map-get($theme-colors, "dark");
+$primary: map-get($theme-colors, "primary");
+$secondary: map-get($theme-colors, "secondary");
+$info: map-get($theme-colors, "info");
+$success: map-get($theme-colors, "success");
+$warning: map-get($theme-colors, "warning");
+$danger: map-get($theme-colors, "danger");
+
+@import "bootstrap";
+@import "../GlobalAppStyle.scss";

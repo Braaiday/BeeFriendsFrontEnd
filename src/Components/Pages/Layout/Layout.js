@@ -6,17 +6,11 @@ import AppHeader from './AppHeader'
 
 
 export default function Layout() {
-
     return (
-        <div>
-            <Container fluid>
-                <AppHeader />
-                <Outlet />
-                <br></br>
-                <AppFooter />
-            </Container>
-        </div>
-
-
+        <Container fluid>
+            <AppHeader />
+            <Outlet />
+            <AppFooter />
+        </Container>
     )
 }
