@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setRoom } from '../../../reducers/roomSlice';
 import { toggleSpinner } from '../../../reducers/spinnerSlice';
+import { toast } from 'react-toastify';
 ;
 
 export default function ChatRoomsTable() {
@@ -22,7 +23,10 @@ export default function ChatRoomsTable() {
             dispatch(toggleSpinner());
             setChatRooms(response.data);
         })
-        .catch((error) => dispatch(toggleSpinner()))
+            .catch((error) => {
+                toast(error.message);
+                dispatch(toggleSpinner())
+            })
     }, [])
 
     const joinChatRoom = (chatroom) => {

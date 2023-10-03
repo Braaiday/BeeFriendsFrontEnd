@@ -1,6 +1,5 @@
 import { HubConnectionBuilder } from '@microsoft/signalr';
 import axios from 'axios';
-import { cloneDeep } from 'lodash';
 import React, { useEffect, useState } from 'react'
 import { Button, Col, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,7 +8,7 @@ import { setRoom, setUsers } from '../../../reducers/roomSlice';
 import { toggleSpinner } from '../../../reducers/spinnerSlice';
 import ChatBox from '../../Elements/ChatBox/ChatBox';
 import UserList from '../../Elements/UserList/UserList';
-
+import { toast } from 'react-toastify';
 
 export default function PageChatRoom() {
   const user = useSelector(state => state.user.name);
@@ -31,8 +30,8 @@ export default function PageChatRoom() {
         .build();
 
       setConnection(newConnection);
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      toast(error.message);
     }
     return () => {
       closeConnection();
@@ -43,21 +42,17 @@ export default function PageChatRoom() {
     if (room === null) {
       axios.get(`${process.env.REACT_APP_API_URL}/api/ChatRoom`).then((response) => {
         dispatch(toggleSpinner());
-        let foundRoom = response.data.find(chat => chat.id === Number(id))
-        dispatch(setRoom(foundRoom.name))
+        let foundRoom = response.data.find(chat => chat.id === Number(id));
+        dispatch(setRoom(foundRoom.name));
       })
-        .catch((error) => dispatch(toggleSpinner()))
-
-
-
+        .catch((error) => {
+          toast(error.message);
+          dispatch(toggleSpinner());
+        })
     }
-    debugger
-    let request = {
-      Id: id
-    }
-    axios.post(`${process.env.REACT_APP_API_URL}/api/GetChatHistory`, request)
+
+    axios.post(`${process.env.REACT_APP_API_URL}/api/GetChatHistory`, { Id: id })
       .then((response) => {
-        debugger
         let mapMessages = [];
         response.data.forEach((item) => {
           let newMessage = {
@@ -69,8 +64,8 @@ export default function PageChatRoom() {
         setMessages(mapMessages);
       })
       .catch((error) => {
-
-      })
+        toast(error.message);
+      });
   }, [])
 
   useEffect(() => {
@@ -103,32 +98,32 @@ export default function PageChatRoom() {
   const sendMessage = async (message) => {
     try {
       await connection.invoke("SendMessage", message);
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      toast(error.message);
     }
   }
 
   const closeConnection = async () => {
     try {
       await connection.stop();
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      toast(error.message);
     }
   }
 
   const userIsTyping = async () => {
     try {
       await connection.invoke("IsTypingMessage");
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      toast(error.message);
     }
   }
 
   const userStopedTyping = async () => {
     try {
       await connection.invoke("UserStopedTyping");
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      toast(error.message);
     }
   }
 

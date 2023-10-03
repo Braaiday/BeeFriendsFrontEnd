@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setRoom } from '../../../reducers/roomSlice';
 import { toggleSpinner } from '../../../reducers/spinnerSlice';
+import { toast } from 'react-toastify';
 
 export default function CreateChatRoom({ isOpen, closeModal }) {
 
@@ -15,23 +16,23 @@ export default function CreateChatRoom({ isOpen, closeModal }) {
     const navigate = useNavigate();
 
     const handleClose = (event) => {
-        
+
         event.preventDefault();
-        let request = {name: roomname.current.value};
+        let request = { name: roomname.current.value };
         dispatch(toggleSpinner());
         axios.post(`${process.env.REACT_APP_API_URL}/api/CreateChatRoom`, request)
-        .then((response) => {
-            dispatch(setRoom(response.data.name));
-            navigate(`room/${response.data.id}`);
-            dispatch(toggleSpinner());
-        })
-        .catch((response) => {
-            window.alert("unable to create chat room" + {response});
-            dispatch(toggleSpinner());
-        });
+            .then((response) => {
+                dispatch(setRoom(response.data.name));
+                navigate(`room/${response.data.id}`);
+                dispatch(toggleSpinner());
+            })
+            .catch((error) => {
+                toast(error.message);
+                dispatch(toggleSpinner());
+            });
         closeModal();
     }
-    
+
     return (
         <Modal show={isOpen} >
             <Form onSubmit={handleClose}>

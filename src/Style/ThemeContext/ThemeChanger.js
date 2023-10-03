@@ -10,7 +10,7 @@ const ThemeChanger = () => {
     const { setTheme } = useTheme();
 
     return (
-        <div className='d-flex flex-row-reverse'>
+        <div>
             <Dropdown className='m-5' isOpen={dropdownOpen} toggle={() => setDropdownOpen(!dropdownOpen)}>
                 <DropdownToggle caret>
                     Theme

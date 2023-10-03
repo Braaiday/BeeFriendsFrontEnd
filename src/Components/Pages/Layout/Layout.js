@@ -7,10 +7,16 @@ import AppHeader from './AppHeader'
 
 export default function Layout() {
     return (
-        <Container fluid>
-            <AppHeader />
-            <Outlet />
-            <AppFooter />
+        <Container>
+            <div className="w-100 h-25">
+                <AppHeader />
+            </div>
+            <div className="w-100 h-50">
+                <Outlet />
+            </div>
+            <div className="w-100 h-25">
+                <AppFooter />
+            </div>
         </Container>
     )
 }

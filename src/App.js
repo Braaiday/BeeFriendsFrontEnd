@@ -7,7 +7,8 @@ import { useDispatch } from "react-redux";
 import { setUser } from "./reducers/userSlice";
 import { useEffect } from "react";
 import useTheme from "./Style/ThemeContext/useTheme";
-import ThemeChanger from "./Style/ThemeContext/ThemeChanger";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const dispatch = useDispatch();
@@ -23,9 +24,9 @@ function App() {
 
   return (
     <div className={theme}>
-      <div className="App">
-        <ThemeChanger />
+      <div className="bg-light">
         <AppSpinner />
+        <ToastContainer />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Layout />}>
