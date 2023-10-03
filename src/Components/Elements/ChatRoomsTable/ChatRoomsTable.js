@@ -7,12 +7,12 @@ import { useNavigate } from 'react-router-dom';
 import { setRoom } from '../../../reducers/roomSlice';
 import { toggleSpinner } from '../../../reducers/spinnerSlice';
 import { toast } from 'react-toastify';
+import CreateChatRoom from '../CreateChatRoom/CreateChatRoom';
 ;
 
 export default function ChatRoomsTable() {
-
+    const [isOpen, setIsOpen] = useState(false);
     const name = useSelector(state => state.user.name)
-
     const [chatRooms, setChatRooms] = useState([]);
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -34,6 +34,10 @@ export default function ChatRoomsTable() {
         navigate(`room/${chatroom.id}`)
     }
 
+    function closeModal() {
+        setIsOpen(false);
+    }
+
     function mapChatRooms() {
         return chatRooms.map(chatroom =>
             <tr key={chatroom.id}>
@@ -52,6 +56,9 @@ export default function ChatRoomsTable() {
                 <Col>
                     <p>Chatting as {name}</p>
                 </Col>
+                <Col>
+                    <Button onClick={() => setIsOpen(true)}>Create Room</Button>
+                </Col>
             </Row>
 
             <Table striped bordered hover>
@@ -65,6 +72,7 @@ export default function ChatRoomsTable() {
                     {mapChatRooms()}
                 </tbody>
             </Table>
+            <CreateChatRoom isOpen={isOpen} closeModal={() => closeModal()} />
         </>
     )
 }

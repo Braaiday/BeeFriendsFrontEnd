@@ -23,10 +23,10 @@ function App() {
   const { theme } = useTheme();
 
   return (
-    <div className={theme}>
-      <div className="bg-light">
-        <AppSpinner />
-        <ToastContainer />
+    <div className={`${theme} w-100 h-100`}>
+      <AppSpinner />
+      <ToastContainer />
+      <div className="App w-100 h-100">
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Layout />}>

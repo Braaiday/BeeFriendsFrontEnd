@@ -1,3 +1,5 @@
+// List Of All Color Variables To Use
+
 // $light: 
 // $dark: 
 // $primary: 
@@ -7,6 +9,29 @@
 // $warning: 
 // $danger: 
 
+// Here if we do have certain classes we want to override specifically for any theme it can be done here
 .App {
-   
+    background-color: $light;
+    color: $fontcolor !important;
+    overflow: scroll;
+
+    tr {
+        color: $fontcolor !important;
+    }
+
+    td {
+        color: $fontcolor !important;
+    }
+
+    h1 {
+        color: $fontcolor !important;
+    }
+
+    p {
+        color: $fontcolor !important;
+    }
+
+    li {
+        color: $fontcolor !important;
+    }
 }

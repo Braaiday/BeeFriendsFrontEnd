@@ -58,14 +58,14 @@ export default function ChatBox({ sendMessage, messages, userIsTyping, typingUse
                             <Form onSubmit={send}>
                                 <InputGroup>
                                     <InputGroup.Text ><button className='custom-button' type='submit'>Send</button></InputGroup.Text>
-                                    <Form.Control as="textarea"
+                                    <Form.Control
+                                        as="textarea"
                                         aria-label="With textarea"
                                         required
                                         ref={message}
                                         onChange={userIsTypingSomething}
                                         className="custom-text-area"
                                         onKeyDown={(e) => {
-
                                             if (e.code === "Enter" && regExp.test(message.current.value)) {
                                                 e.preventDefault();
                                                 sendMessage(message.current.value);

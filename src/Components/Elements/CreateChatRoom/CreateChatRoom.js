@@ -8,7 +8,6 @@ import { toggleSpinner } from '../../../reducers/spinnerSlice';
 import { toast } from 'react-toastify';
 
 export default function CreateChatRoom({ isOpen, closeModal }) {
-
     // Hooks
     const roomname = useRef();
     const username = useSelector(state => state.user.name);
