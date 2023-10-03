@@ -24,6 +24,7 @@ function App() {
   return (
     <div className={theme}>
       <div className="App">
+        <p>Test Text</p>
         <ThemeChanger />
         <AppSpinner />
         <BrowserRouter>
