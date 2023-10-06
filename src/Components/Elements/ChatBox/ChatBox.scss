@@ -1,34 +1,15 @@
-button {
-    border: none;
-}
-
-.loading:after {
-    overflow: hidden;
-    display: inline-block;
-    vertical-align: bottom;
-    -webkit-animation: ellipsis steps(4, end) 900ms infinite;
-    animation: ellipsis steps(4, end) 900ms infinite;
-    content: "\2026";
-    /* ascii code for the ellipsis character */
-    width: 0px;
-}
-
-.card-max-height{
-    max-height: 400px;
-}
-
-.custom-scroll-container{
-    overflow-y: scroll;
-}
-
-@keyframes ellipsis {
-    to {
-        width: 1.25em;
+.chatbox {
+    button {
+        border: none;
     }
-}
 
-@-webkit-keyframes ellipsis {
-    to {
-        width: 1.25em;
+    .card-max-height {
+        min-height: 400px;
+        max-height: 400px;
     }
+
+    .custom-scroll-container {
+        overflow-y: scroll;
+    }
+
 }

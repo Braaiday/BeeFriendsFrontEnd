@@ -26,7 +26,7 @@ function App() {
     <div className={`${theme} w-100 h-100`}>
       <AppSpinner />
       <ToastContainer />
-      <div className="App w-100 h-100">
+      <div className="App w-100 h-100 p-3">
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Layout />}>

@@ -4,7 +4,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useSelector } from 'react-redux';
 
-export default function ChatBox({ sendMessage, messages, userIsTyping, typingUsers, userStopedTyping }) {
+export default function ChatBox({ sendMessage, messages, userIsTyping, typingUsers, userStoppedTyping }) {
     const roomName = useSelector(state => state.room.name);
     const user = useSelector(state => state.user.name);
     const message = useRef();
@@ -31,7 +31,7 @@ export default function ChatBox({ sendMessage, messages, userIsTyping, typingUse
     const userIsTypingSomething = () => {
         let isAlreadyTyping = typingUsers.find(m => m.message === user + " is typing")
         if (message.current.value.length === 1 && !isAlreadyTyping) userIsTyping();
-        if (message.current.value.length === 0 && isAlreadyTyping) userStopedTyping();
+        if (message.current.value.length === 0 && isAlreadyTyping) userStoppedTyping();
     }
 
     const scrollToBottom = () => {
@@ -43,7 +43,7 @@ export default function ChatBox({ sendMessage, messages, userIsTyping, typingUse
     }, [localmessages])
 
     return (
-        <Container>
+        <Container className='chatbox'>
             <Row>
                 <Col>
                     <Card className='card-max-height'>
@@ -57,7 +57,7 @@ export default function ChatBox({ sendMessage, messages, userIsTyping, typingUse
                         <Card.Footer>
                             <Form onSubmit={send}>
                                 <InputGroup>
-                                    <InputGroup.Text ><button className='custom-button' type='submit'>Send</button></InputGroup.Text>
+                                    <InputGroup.Text ><button type='submit'>Send</button></InputGroup.Text>
                                     <Form.Control
                                         as="textarea"
                                         aria-label="With textarea"
@@ -79,7 +79,7 @@ export default function ChatBox({ sendMessage, messages, userIsTyping, typingUse
                                         }}
                                         onBlur={(e) => {
                                             e.preventDefault();
-                                            userStopedTyping();
+                                            userStoppedTyping();
                                         }}
                                         onFocus={(e) => {
                                             e.preventDefault();
@@ -90,7 +90,6 @@ export default function ChatBox({ sendMessage, messages, userIsTyping, typingUse
                             </Form>
                         </Card.Footer>
                     </Card>
-                    {typingUsers.map(user => <p className='loading mr-1'>{user.message}</p>)}
                 </Col>
             </Row>
         </Container>

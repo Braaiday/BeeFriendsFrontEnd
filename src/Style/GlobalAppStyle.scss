@@ -34,4 +34,22 @@
     li {
         color: $fontcolor !important;
     }
+
+    button {
+        color: $fontcolor !important;
+    }
+
+    .card {
+        .card-header {
+            background-color: $primary;
+        }
+
+        .card-body {
+            background-color: $primary;
+        }
+
+        .card-footer {
+            background-color: $primary;
+        }
+    }
 }

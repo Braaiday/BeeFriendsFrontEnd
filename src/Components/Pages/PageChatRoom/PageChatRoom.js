@@ -119,9 +119,9 @@ export default function PageChatRoom() {
     }
   }
 
-  const userStopedTyping = async () => {
+  const userStoppedTyping = async () => {
     try {
-      await connection.invoke("UserStopedTyping");
+      await connection.invoke("UserStoppedTyping");
     } catch (error) {
       toast(error.message);
     }
@@ -141,7 +141,7 @@ export default function PageChatRoom() {
   }
 
   return (
-    <div>
+    <div className='PageChatRoom'>
       <Row>
         <Col>
           <Button onClick={() => {
@@ -161,7 +161,8 @@ export default function PageChatRoom() {
         {!apiIsLoading &&
           <>
             <UserList />
-            <ChatBox className="flex" sendMessage={sendMessage} messages={messages} userIsTyping={userIsTyping} typingUsers={typingUsers} userStopedTyping={userStopedTyping} />
+            <ChatBox className="flex" sendMessage={sendMessage} messages={messages} userIsTyping={userIsTyping} typingUsers={typingUsers} userStoppedTyping={userStoppedTyping} />
+            {typingUsers.map(user => <p className='loading mr-1'>{user.message}</p>)}
           </>
         }
       </div>
