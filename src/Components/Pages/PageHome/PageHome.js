@@ -11,7 +11,7 @@ export default function PageHome() {
   return (
     <div>
       {user === null
-        ? <UserModal isOpen={user === null ? true : false} />
+        ? <UserModal isOpen={!user} />
         : <ChatRoomsTable />
       }
     </div>

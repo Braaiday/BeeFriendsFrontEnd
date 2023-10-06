@@ -9,24 +9,23 @@ import { toast } from 'react-toastify';
 
 export default function CreateChatRoom({ isOpen, closeModal }) {
     // Hooks
-    const roomname = useRef();
-    const username = useSelector(state => state.user.name);
+    const roomName = useRef();
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleClose = (event) => {
 
         event.preventDefault();
-        let request = { name: roomname.current.value };
+        let request = { name: roomName.current.value };
         dispatch(toggleSpinner());
         axios.post(`${process.env.REACT_APP_API_URL}/api/CreateChatRoom`, request)
             .then((response) => {
                 dispatch(setRoom(response.data.name));
-                navigate(`room/${response.data.id}`);
+                navigate(`room/${response.data.name}/${response.data.id}`);
                 dispatch(toggleSpinner());
             })
             .catch((error) => {
-                toast(error.message);
+                toast(error.response.data);
                 dispatch(toggleSpinner());
             });
         closeModal();
@@ -42,7 +41,7 @@ export default function CreateChatRoom({ isOpen, closeModal }) {
 
                     <Form.Group className="mb-3" controlId="formBasicName">
                         <Form.Label>Name</Form.Label>
-                        <Form.Control required ref={roomname} type="text" placeholder="Name" />
+                        <Form.Control required ref={roomName} type="text" placeholder="Name" />
                         <Form.Text className="text-muted">
                             Room Name
                         </Form.Text>

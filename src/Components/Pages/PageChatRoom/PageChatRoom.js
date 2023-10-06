@@ -11,18 +11,17 @@ import UserList from '../../Elements/UserList/UserList';
 import { toast } from 'react-toastify';
 
 export default function PageChatRoom() {
-  const user = useSelector(state => state.user.name);
+  const user = useSelector(state => state.user.name ?? localStorage.getItem('name'));
   const [messages, setMessages] = useState([]);
   const [typingUsers, setTypingUsers] = useState([]);
-  const room = useSelector(state => state.room.name);
   const [connection, setConnection] = useState(null);
   const apiIsLoading = useSelector(state => state.spinner.isLoading);
-  const { id } = useParams();
-
+  const { id, room } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (!user) navigate('/')
     try {
       const newConnection = new HubConnectionBuilder()
         .withUrl(`${process.env.REACT_APP_API_URL}/chat`)
@@ -148,8 +147,8 @@ export default function PageChatRoom() {
     <div className='PageChatRoom'>
       <Row>
         <Col>
-          <Button onClick={ () => {
-             closeConnection();
+          <Button onClick={() => {
+            closeConnection();
             navigate("/");
           }} className="justify-content-end">
             Leave Room
@@ -166,9 +165,11 @@ export default function PageChatRoom() {
           <>
             <UserList />
             <ChatBox className="flex" sendMessage={sendMessage} messages={messages} userIsTyping={userIsTyping} typingUsers={typingUsers} userStoppedTyping={userStoppedTyping} />
-            {typingUsers.map(user => <p className='loading mr-1'>{user.message}</p>)}
           </>
         }
+      </div>
+      <div className='justify-content-center'>
+        {typingUsers.map(user => <p key={user} className='loading mr-1'>{user.message}</p>)}
       </div>
     </div>
 

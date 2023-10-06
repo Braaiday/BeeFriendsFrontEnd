@@ -8,7 +8,6 @@ import { setRoom } from '../../../reducers/roomSlice';
 import { toggleSpinner } from '../../../reducers/spinnerSlice';
 import { toast } from 'react-toastify';
 import CreateChatRoom from '../CreateChatRoom/CreateChatRoom';
-;
 
 export default function ChatRoomsTable() {
     const [isOpen, setIsOpen] = useState(false);
@@ -31,7 +30,7 @@ export default function ChatRoomsTable() {
 
     const joinChatRoom = (chatroom) => {
         dispatch(setRoom(chatroom.name))
-        navigate(`room/${chatroom.id}`)
+        navigate(`room/${chatroom.name}/${chatroom.id}`)
     }
 
     function closeModal() {
