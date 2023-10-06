@@ -105,11 +105,15 @@ export default function PageChatRoom() {
 
   const closeConnection = async () => {
     try {
-      await connection.stop();
+      if (connection) {
+        await connection.stop();
+        // Set the connection to null after stopping it
+        setConnection(null);
+      }
     } catch (error) {
       toast(error.message);
     }
-  }
+  };
 
   const userIsTyping = async () => {
     try {
@@ -144,8 +148,8 @@ export default function PageChatRoom() {
     <div className='PageChatRoom'>
       <Row>
         <Col>
-          <Button onClick={() => {
-            closeConnection();
+          <Button onClick={ () => {
+             closeConnection();
             navigate("/");
           }} className="justify-content-end">
             Leave Room
