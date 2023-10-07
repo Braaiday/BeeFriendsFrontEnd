@@ -7,7 +7,7 @@ import { setRoom } from '../../../reducers/roomSlice';
 import { toggleSpinner } from '../../../reducers/spinnerSlice';
 import { toast } from 'react-toastify';
 
-export default function CreateChatRoom({ isOpen, closeModal, sendNewRoom }) {
+export default function CreateChatRoom({ isOpen, toggleModal, sendNewRoom }) {
     // Hooks
     const roomName = useRef();
     const dispatch = useDispatch();
@@ -17,6 +17,7 @@ export default function CreateChatRoom({ isOpen, closeModal, sendNewRoom }) {
 
         event.preventDefault();
         let request = { name: roomName.current.value };
+        toggleModal();
         dispatch(toggleSpinner());
 
         let createChatRoomResponse;
@@ -25,6 +26,7 @@ export default function CreateChatRoom({ isOpen, closeModal, sendNewRoom }) {
         } catch (error){
             toast(error.response.data);
             dispatch(toggleSpinner());
+            toggleModal();
             return
         }
 
@@ -32,7 +34,7 @@ export default function CreateChatRoom({ isOpen, closeModal, sendNewRoom }) {
         dispatch(toggleSpinner());
         dispatch(setRoom(createChatRoomResponse.data.name));
         navigate(`room/${createChatRoomResponse.data.name}/${createChatRoomResponse.data.id}`);
-        closeModal();
+        
     }
 
     const createChatRoom = (request) => {

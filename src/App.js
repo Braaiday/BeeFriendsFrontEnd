@@ -3,23 +3,11 @@ import Layout from "./Components/Pages/Layout/Layout";
 import PageChatRoom from "./Components/Pages/PageChatRoom/PageChatRoom";
 import PageHome from "./Components/Pages/PageHome/PageHome";
 import AppSpinner from "./Components/Elements/AppSpinner/AppSpinner";
-import { useDispatch } from "react-redux";
-import { setUser } from "./reducers/userSlice";
-import { useEffect } from "react";
 import useTheme from "./Style/ThemeContext/useTheme";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from "react-toastify";
 
 function App() {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    let name = localStorage.getItem('name')
-    if (name) {
-      dispatch(setUser(name));
-    }
-  }, []);
-
   const { theme } = useTheme();
 
   return (

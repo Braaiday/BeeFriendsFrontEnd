@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
 import Table from 'react-bootstrap/Table';
@@ -72,8 +71,8 @@ export default function ChatRoomsTable() {
         navigate(`room/${chatroom.name}/${chatroom.id}`)
     }
 
-    function closeModal() {
-        setIsOpen(false);
+    function toggleModal() {
+        setIsOpen(!isOpen);
     }
 
     function mapChatRooms() {
@@ -119,7 +118,7 @@ export default function ChatRoomsTable() {
                     {mapChatRooms()}
                 </tbody>
             </Table>
-            <CreateChatRoom isOpen={isOpen} closeModal={() => closeModal()} sendNewRoom={sendNewRoom} />
+            <CreateChatRoom isOpen={isOpen} toggleModal={() => toggleModal()} sendNewRoom={sendNewRoom} />
         </>
     )
 }

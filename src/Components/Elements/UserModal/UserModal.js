@@ -4,22 +4,25 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../../reducers/userSlice';
+import axios from 'axios';
+
 
 export default function UserModal({ isOpen }) {
     const name = useRef()
     const [show, setShow] = useState(isOpen);
     const dispatch = useDispatch();
 
-    const handleClose = () => {
-        dispatch(setUser(name.current.value));
+    const handleClose = async (event) => {
+        event.preventDefault();
         localStorage.setItem('name', name.current.value);
+        dispatch(setUser(name.current.value));
         setShow(false);
     }
-    
+
     return (
         <>
             <Modal show={show}>
-                <Form onSubmit={() => handleClose()}>
+                <Form onSubmit={handleClose}>
                     <Modal.Header>
                         <Modal.Title>Who do you want to be known as</Modal.Title>
                     </Modal.Header>
