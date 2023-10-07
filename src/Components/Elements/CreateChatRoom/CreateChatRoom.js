@@ -17,24 +17,22 @@ export default function CreateChatRoom({ isOpen, toggleModal, sendNewRoom }) {
 
         event.preventDefault();
         let request = { name: roomName.current.value };
-        toggleModal();
         dispatch(toggleSpinner());
 
         let createChatRoomResponse;
         try {
             createChatRoomResponse = await createChatRoom(request);
-        } catch (error){
+        } catch (error) {
             toast(error.response.data);
-            dispatch(toggleSpinner());
-            toggleModal();
+            dispatch(toggleSpinner()); 
             return
         }
 
-        await sendNewRoom(roomName.current.value );
+        await sendNewRoom(roomName.current.value);
         dispatch(toggleSpinner());
         dispatch(setRoom(createChatRoomResponse.data.name));
         navigate(`room/${createChatRoomResponse.data.name}/${createChatRoomResponse.data.id}`);
-        
+        toggleModal();
     }
 
     const createChatRoom = (request) => {
