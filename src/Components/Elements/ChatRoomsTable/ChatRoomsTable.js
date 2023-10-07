@@ -8,25 +8,64 @@ import { setRoom } from '../../../reducers/roomSlice';
 import { toggleSpinner } from '../../../reducers/spinnerSlice';
 import { toast } from 'react-toastify';
 import CreateChatRoom from '../CreateChatRoom/CreateChatRoom';
+import { HubConnectionBuilder } from '@microsoft/signalr';
 
 export default function ChatRoomsTable() {
     const [isOpen, setIsOpen] = useState(false);
     const name = useSelector(state => state.user.name)
     const [chatRooms, setChatRooms] = useState([]);
+    const [connection, setConnection] = useState(null);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    const closeConnection = async () => {
+        try {
+            if (connection) {
+                await connection.stop();
+                // Set the connection to null after stopping it
+                setConnection(null);
+            }
+        } catch (error) {
+            toast(error.message);
+        }
+    };
+
     useEffect(() => {
+        try {
+            const newConnection = new HubConnectionBuilder()
+                .withUrl(`${process.env.REACT_APP_API_URL}/lobby`)
+                .withAutomaticReconnect()
+                .build();
+
+            setConnection(newConnection);
+        } catch (error) {
+            toast(error.message);
+        }
+        return () => {
+            closeConnection();
+        }
+    }, []);
+
+    useEffect(() => {
+        if (connection) {
+            joinRoom();
+        }
+    }, [connection])
+
+    const joinRoom = async () => {
         dispatch(toggleSpinner());
-        axios.get(`${process.env.REACT_APP_API_URL}/api/ChatRoom`).then((response) => {
-            dispatch(toggleSpinner());
-            setChatRooms(response.data);
-        })
-            .catch((error) => {
-                toast(error.message);
-                dispatch(toggleSpinner())
-            })
-    }, [])
+        connection.on("ActiveRooms", (rooms) => {
+            setChatRooms(rooms);
+        });
+
+        connection.onclose(e => {
+            setConnection(null);
+        });
+
+        await connection.start();
+        await connection.invoke("JoinLobby", { user: name, room: "Lobby" });
+        dispatch(toggleSpinner());
+    }
 
     const joinChatRoom = (chatroom) => {
         dispatch(setRoom(chatroom.name))
@@ -44,6 +83,15 @@ export default function ChatRoomsTable() {
                 <td><Button onClick={() => joinChatRoom(chatroom)}>Join Room</Button></td>
             </tr>
         )
+    }
+    const sendNewRoom = async (roomName) => {
+        try {
+
+            await connection.invoke("NewRoomCreated")
+        } catch (error) {
+            toast(error.message);
+            dispatch(toggleSpinner());
+        }
     }
 
     return (
@@ -71,7 +119,7 @@ export default function ChatRoomsTable() {
                     {mapChatRooms()}
                 </tbody>
             </Table>
-            <CreateChatRoom isOpen={isOpen} closeModal={() => closeModal()} />
+            <CreateChatRoom isOpen={isOpen} closeModal={() => closeModal()} sendNewRoom={sendNewRoom} />
         </>
     )
 }

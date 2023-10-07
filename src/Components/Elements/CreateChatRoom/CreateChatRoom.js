@@ -7,28 +7,36 @@ import { setRoom } from '../../../reducers/roomSlice';
 import { toggleSpinner } from '../../../reducers/spinnerSlice';
 import { toast } from 'react-toastify';
 
-export default function CreateChatRoom({ isOpen, closeModal }) {
+export default function CreateChatRoom({ isOpen, closeModal, sendNewRoom }) {
     // Hooks
     const roomName = useRef();
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const handleClose = (event) => {
+    const handleClose = async (event) => {
 
         event.preventDefault();
         let request = { name: roomName.current.value };
         dispatch(toggleSpinner());
-        axios.post(`${process.env.REACT_APP_API_URL}/api/CreateChatRoom`, request)
-            .then((response) => {
-                dispatch(setRoom(response.data.name));
-                navigate(`room/${response.data.name}/${response.data.id}`);
-                dispatch(toggleSpinner());
-            })
-            .catch((error) => {
-                toast(error.response.data);
-                dispatch(toggleSpinner());
-            });
+
+        let createChatRoomResponse;
+        try {
+            createChatRoomResponse = await createChatRoom(request);
+        } catch (error){
+            toast(error.response.data);
+            dispatch(toggleSpinner());
+            return
+        }
+
+        await sendNewRoom(roomName.current.value );
+        dispatch(toggleSpinner());
+        dispatch(setRoom(createChatRoomResponse.data.name));
+        navigate(`room/${createChatRoomResponse.data.name}/${createChatRoomResponse.data.id}`);
         closeModal();
+    }
+
+    const createChatRoom = (request) => {
+        return axios.post(`${process.env.REACT_APP_API_URL}/api/CreateChatRoom`, request);
     }
 
     return (
