@@ -8,12 +8,14 @@ import { toggleSpinner } from '../../../reducers/spinnerSlice';
 import { toast } from 'react-toastify';
 import CreateChatRoom from '../CreateChatRoom/CreateChatRoom';
 import { HubConnectionBuilder } from '@microsoft/signalr';
+import BrowsingUsers from '../BrowsingUsers/BrowsingUsers';
 
 export default function ChatRoomsTable() {
     const [isOpen, setIsOpen] = useState(false);
     const name = useSelector(state => state.user.name)
     const [chatRooms, setChatRooms] = useState([]);
     const [connection, setConnection] = useState(null);
+    const [users, setUsers] = useState([]);
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -57,6 +59,10 @@ export default function ChatRoomsTable() {
             setChatRooms(rooms);
         });
 
+        connection.on("UsersInRoom", (users) => {
+            setUsers(users);
+        });
+
         connection.onclose(e => {
             setConnection(null);
         });
@@ -83,6 +89,7 @@ export default function ChatRoomsTable() {
             </tr>
         )
     }
+    
     const sendNewRoom = async (roomName) => {
         try {
 
@@ -118,6 +125,7 @@ export default function ChatRoomsTable() {
                     {mapChatRooms()}
                 </tbody>
             </Table>
+            <BrowsingUsers users={users} />
             <CreateChatRoom isOpen={isOpen} toggleModal={() => toggleModal()} sendNewRoom={sendNewRoom} />
         </>
     )
