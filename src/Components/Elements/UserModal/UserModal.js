@@ -5,6 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../../reducers/userSlice';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 
 export default function UserModal({ isOpen }) {
@@ -14,9 +15,16 @@ export default function UserModal({ isOpen }) {
 
     const handleClose = async (event) => {
         event.preventDefault();
-        localStorage.setItem('name', name.current.value);
-        dispatch(setUser(name.current.value));
-        setShow(false);
+        axios.post(`${process.env.REACT_APP_API_URL}/api/SaveUsername`, name.current.value, {
+            headers: { 'Content-Type': 'application/json' }
+        })
+            .then(() => {
+                localStorage.setItem('name', name.current.value);
+                dispatch(setUser(name.current.value));
+                setShow(false);
+            }).catch((error) => {
+                toast(error.message);
+            })
     }
 
     return (

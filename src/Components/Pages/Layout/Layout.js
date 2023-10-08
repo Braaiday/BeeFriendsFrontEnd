@@ -8,7 +8,6 @@ import UserModal from '../../Elements/UserModal/UserModal';
 
 export default function Layout() {
     const dispatch = useDispatch();
-    const location = useLocation();
     const user = useSelector(state => state.user.name)
     const name = localStorage.getItem('name');
 
