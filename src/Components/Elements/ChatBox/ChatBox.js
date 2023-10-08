@@ -1,7 +1,5 @@
 import React, { useEffect, useMemo, useRef } from 'react';
-import { Card, Container, Form, InputGroup } from 'react-bootstrap';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { Card, Col, Container, Form, InputGroup, Row } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 
 export default function ChatBox({ sendMessage, messages, userIsTyping, typingUsers, userStoppedTyping }) {

@@ -164,7 +164,7 @@ export default function PageChatRoom() {
         {!apiIsLoading &&
           <>
             <UserList />
-            <ChatBox className="flex" sendMessage={sendMessage} messages={messages} userIsTyping={userIsTyping} typingUsers={typingUsers} userStoppedTyping={userStoppedTyping} />
+            <ChatBox sendMessage={sendMessage} messages={messages} userIsTyping={userIsTyping} typingUsers={typingUsers} userStoppedTyping={userStoppedTyping} />
           </>
         }
       </div>

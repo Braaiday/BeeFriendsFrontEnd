@@ -1,10 +1,7 @@
 const { createContext, useState } = require("react");
-
 const ThemeContext = createContext();
 
-
 export const ThemeProvider= ({ children }) => {
-
   const [theme, setTheme] = useState('dark');
 
   return (

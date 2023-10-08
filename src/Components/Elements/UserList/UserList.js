@@ -6,14 +6,14 @@ export default function UserList() {
   const users = useSelector(state => state.room.users);
   return (
     <Card>
-        <Card.Header>
-            Users chatting
-        </Card.Header>
-        <Card.Body>
-          <ul >
-            {users.map(user => <li key={user}>{user}</li>)}
-          </ul>
-        </Card.Body>
+      <Card.Header>
+        Users chatting
+      </Card.Header>
+      <Card.Body>
+        <ul>
+          {users.map(user => <li key={user}>{user}</li>)}
+        </ul>
+      </Card.Body>
     </Card>
   )
 }
