@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { setUser } from '../../../reducers/userSlice';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { toggleSpinner } from '../../../reducers/spinnerSlice';
 
 
 export default function UserModal({ isOpen }) {
