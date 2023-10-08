@@ -15,14 +15,17 @@ export default function UserModal({ isOpen }) {
 
     const handleClose = async (event) => {
         event.preventDefault();
+        dispatch(toggleSpinner());
         axios.post(`${process.env.REACT_APP_API_URL}/api/SaveUsername`, name.current.value, {
             headers: { 'Content-Type': 'application/json' }
         })
             .then(() => {
+                dispatch(toggleSpinner());
                 localStorage.setItem('name', name.current.value);
                 dispatch(setUser(name.current.value));
                 setShow(false);
             }).catch((error) => {
+                dispatch(toggleSpinner());
                 toast(error.message);
             })
     }
