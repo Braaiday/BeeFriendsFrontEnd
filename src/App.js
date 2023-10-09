@@ -1,11 +1,11 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Layout from "./Components/Pages/Layout/Layout";
 import PageHome from "./Components/Pages/PageHome/PageHome";
 import AppSpinner from "./Components/Elements/AppSpinner/AppSpinner";
 import useTheme from "./Style/ThemeContext/useTheme";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from "react-toastify";
 import { PageChatRoom } from "./Components/Pages/PageChatRoom/PageChatRoom";
+import Layout from "./Components/Layout/Layout";
 
 function App() {
   const { theme } = useTheme();

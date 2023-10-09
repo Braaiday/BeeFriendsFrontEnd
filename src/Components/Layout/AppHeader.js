@@ -1,6 +1,6 @@
 import React from 'react'
-import image from '../../../Style/Images/bee.png';
-import ThemeChanger from '../../../Style/ThemeContext/ThemeChanger';
+import image from '../../Style/Images/bee.png';
+import ThemeChanger from '../../Style/ThemeContext/ThemeChanger';
 import { NavLink } from 'react-router-dom';
 
 export default function AppHeader() {

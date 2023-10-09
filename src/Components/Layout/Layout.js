@@ -2,9 +2,9 @@ import React, { useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import AppFooter from './AppFooter'
 import AppHeader from './AppHeader'
-import { setUser } from '../../../reducers/userSlice';
+import { setUser } from '../../reducers/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import UserModal from '../../Elements/UserModal/UserModal';
+import UserModal from '../Elements/UserModal/UserModal';
 
 export default function Layout() {
     const dispatch = useDispatch();
