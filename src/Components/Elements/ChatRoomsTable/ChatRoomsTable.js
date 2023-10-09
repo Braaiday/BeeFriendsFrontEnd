@@ -3,7 +3,6 @@ import { Button, Col, Row } from 'react-bootstrap';
 import Table from 'react-bootstrap/Table';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setRoom } from '../../../reducers/roomSlice';
 import { toggleSpinner } from '../../../reducers/spinnerSlice';
 import { toast } from 'react-toastify';
 import CreateChatRoom from '../CreateChatRoom/CreateChatRoom';
@@ -73,7 +72,6 @@ export default function ChatRoomsTable() {
     }
 
     const joinChatRoom = (chatroom) => {
-        dispatch(setRoom(chatroom.name))
         navigate(`room/${chatroom.name}/${chatroom.id}`)
     }
 
@@ -126,6 +124,7 @@ export default function ChatRoomsTable() {
                 </tbody>
             </Table>
             <BrowsingUsers users={users} />
+            {/* Create Chat Room Modal */}
             <CreateChatRoom isOpen={isOpen} toggleModal={() => toggleModal()} sendNewRoom={sendNewRoom} />
         </>
     )

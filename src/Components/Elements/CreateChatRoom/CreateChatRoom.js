@@ -3,7 +3,6 @@ import React, { useRef } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setRoom } from '../../../reducers/roomSlice';
 import { toggleSpinner } from '../../../reducers/spinnerSlice';
 import { toast } from 'react-toastify';
 
@@ -30,7 +29,6 @@ export default function CreateChatRoom({ isOpen, toggleModal, sendNewRoom }) {
 
         await sendNewRoom(roomName.current.value);
         dispatch(toggleSpinner());
-        dispatch(setRoom(createChatRoomResponse.data.name));
         navigate(`room/${createChatRoomResponse.data.name}/${createChatRoomResponse.data.id}`);
         toggleModal();
     }

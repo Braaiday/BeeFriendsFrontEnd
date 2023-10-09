@@ -1,19 +1,23 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import { Card, Col, Container, Form, InputGroup, Row } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { sendMessage, userIsTyping, userStoppedTyping } from '../../../reducers/roomSlice';
+import { useParams } from 'react-router-dom';
 
-export default function ChatBox({ sendMessage, messages, userIsTyping, typingUsers, userStoppedTyping }) {
-    const roomName = useSelector(state => state.room.name);
-    const user = useSelector(state => state.user.name);
-    const message = useRef();
-    const messagesEndRef = useRef()
+export const ChatBox = () => {
+    // Constants
     const regExp = /[a-zA-Z]/g;
 
-    const send = async (event) => {
-        event.preventDefault();
-        sendMessage(message.current.value);
-        message.current.value = '';
-    }
+    // Redux
+    const dispatch = useDispatch();
+    const user = useSelector(state => state.user.name);
+    const messages = useSelector(state => state.room.messages);
+    const typingUsers = useSelector(state => state.room.typingUsers);
+
+    // Hooks
+    const { room } = useParams();
+    const message = useRef();
+    const messagesEndRef = useRef()
 
     const localmessages = useMemo(() => {
 
@@ -26,10 +30,16 @@ export default function ChatBox({ sendMessage, messages, userIsTyping, typingUse
         })
     }, [messages])
 
+    const send = async (event) => {
+        event.preventDefault();
+        dispatch(sendMessage(message.current.value));
+        message.current.value = '';
+    }
+
     const userIsTypingSomething = () => {
         let isAlreadyTyping = typingUsers.find(m => m.message === user + " is typing")
-        if (message.current.value.length === 1 && !isAlreadyTyping) userIsTyping();
-        if (message.current.value.length === 0 && isAlreadyTyping) userStoppedTyping();
+        if (message.current.value.length === 1 && !isAlreadyTyping) dispatch(userIsTyping());
+        if (message.current.value.length === 0 && isAlreadyTyping) dispatch(userStoppedTyping());
     }
 
     const scrollToBottom = () => {
@@ -46,7 +56,7 @@ export default function ChatBox({ sendMessage, messages, userIsTyping, typingUse
                 <Col>
                     <Card className='card-max-height'>
                         <Card.Header>
-                            You are chatting in {roomName}
+                            You are chatting in {room}
                         </Card.Header>
                         <Card.Body className='h-75 d-inline-block pb-20 custom-scroll-container'>
                             {localmessages}

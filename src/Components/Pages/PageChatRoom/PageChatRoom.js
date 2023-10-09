@@ -1,177 +1,95 @@
-import { HubConnectionBuilder } from '@microsoft/signalr';
-import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
+import UserList from '../../Elements/UserList/UserList';
 import { Button, Col, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
-import { setRoom, setUsers } from '../../../reducers/roomSlice';
+import { getChatHistory, handleReceivedMessage, initializeSignalRConnection, setUsers, stopSignalRConnection } from '../../../reducers/roomSlice';
 import { toggleSpinner } from '../../../reducers/spinnerSlice';
-import ChatBox from '../../Elements/ChatBox/ChatBox';
-import UserList from '../../Elements/UserList/UserList';
-import { toast } from 'react-toastify';
+import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { ChatBox } from '../../Elements/ChatBox/ChatBox';
+import { HubConnectionState } from '@microsoft/signalr';
 
-export default function PageChatRoom() {
-  const user = useSelector(state => state.user.name ?? localStorage.getItem('name'));
-  const [messages, setMessages] = useState([]);
-  const [typingUsers, setTypingUsers] = useState([]);
-  const [connection, setConnection] = useState(null);
-  const apiIsLoading = useSelector(state => state.spinner.isLoading);
-  const { id, room } = useParams();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+export const PageChatRoom = () => {
+    //Redux 
+    const dispatch = useDispatch();
+    const apiIsLoading = useSelector(state => state.spinner.isLoading);
+    const typingUsers = useSelector(state => state.room.typingUsers);
+    const user = useSelector(state => state.user.name ?? localStorage.getItem('name'));
+    const connection = useSelector(state => state?.room?.connection ?? null);
+    const { room, id } = useParams();
 
-  useEffect(() => {
-    if (!user) navigate('/')
-    try {
-      const newConnection = new HubConnectionBuilder()
-        .withUrl(`${process.env.REACT_APP_API_URL}/chat`)
-        .withAutomaticReconnect()
-        .build();
+    // Hooks
+    const navigate = useNavigate();
 
-      setConnection(newConnection);
-    } catch (error) {
-      toast(error.message);
-    }
-    return () => {
-      closeConnection();
-    }
-  }, []);
+    // Initializing Signal R Connection
+    useEffect(() => {
+        dispatch(initializeSignalRConnection());
+        return () => dispatch(stopSignalRConnection());
+    }, []);
 
-  useEffect(() => {
-    if (room === null) {
-      axios.get(`${process.env.REACT_APP_API_URL}/api/ChatRoom`).then((response) => {
-        dispatch(toggleSpinner());
-        let foundRoom = response.data.find(chat => chat.id === Number(id));
-        dispatch(setRoom(foundRoom.name));
-      })
-        .catch((error) => {
-          toast(error.message);
-          dispatch(toggleSpinner());
-        })
-    }
+    // Getting the chat history
+    useEffect(() => {
+        dispatch(getChatHistory(id));
+    }, []);
 
-    axios.post(`${process.env.REACT_APP_API_URL}/api/GetChatHistory`, { Id: id })
-      .then((response) => {
-        let mapMessages = [];
-        response.data.forEach((item) => {
-          let newMessage = {
-            message: item.userMessage,
-            user: item.user
-          }
-          mapMessages.push(newMessage)
-        })
-        setMessages(mapMessages);
-      })
-      .catch((error) => {
-        toast(error.message);
-      });
-  }, [])
-
-  useEffect(() => {
-    if (connection) {
-      joinRoom();
-    }
-  }, [connection])
-
-  const joinRoom = async () => {
-    dispatch(toggleSpinner());
-    connection.on("ReceiveMessage", (user, message) => {
-      handleMessagesUpdates(user, message)
-    });
-
-    connection.on("UsersInRoom", (users) => {
-      dispatch(setUsers(users));
-    });
-
-    connection.onclose(e => {
-      setConnection(null);
-      setMessages([]);
-      dispatch(setUsers([]));
-    });
-
-    await connection.start();
-    await connection.invoke("JoinRoom", { user, room });
-    dispatch(toggleSpinner());
-  }
-
-  const sendMessage = async (message) => {
-    try {
-      await connection.invoke("SendMessage", message);
-    } catch (error) {
-      toast(error.message);
-    }
-  }
-
-  const closeConnection = async () => {
-    try {
-      if (connection) {
-        await connection.stop();
-        // Set the connection to null after stopping it
-        setConnection(null);
-      }
-    } catch (error) {
-      toast(error.message);
-    }
-  };
-
-  const userIsTyping = async () => {
-    try {
-      await connection.invoke("IsTypingMessage");
-    } catch (error) {
-      toast(error.message);
-    }
-  }
-
-  const userStoppedTyping = async () => {
-    try {
-      await connection.invoke("UserStoppedTyping");
-    } catch (error) {
-      toast(error.message);
-    }
-  }
-
-  const handleMessagesUpdates = (username, message) => {
-    if (message === username + " is typing") {
-      setTypingUsers(messages => [...messages, { user: username, message }])
-    }
-    else if (message === "") {
-      setTypingUsers(messages => messages.filter(m => m.user !== username))
-    }
-    else {
-      setMessages(messages => [...messages, { user: username, message }]);
-      setTypingUsers(messages => messages.filter(m => m.user !== username))
-    }
-  }
-
-  return (
-    <div className='PageChatRoom'>
-      <Row>
-        <Col>
-          <Button onClick={() => {
-            closeConnection();
-            navigate("/");
-          }} className="justify-content-end">
-            Leave Room
-          </Button>
-        </Col>
-        <Col>
-          <p>Chatting as {user}</p>
-        </Col>
-      </Row>
-      <br />
-      <br />
-      <div className='d-flex'>
-        {!apiIsLoading &&
-          <>
-            <UserList />
-            <ChatBox sendMessage={sendMessage} messages={messages} userIsTyping={userIsTyping} typingUsers={typingUsers} userStoppedTyping={userStoppedTyping} />
-          </>
+    // When we have a connection call the join room function
+    useEffect(() => {
+        if (connection) {
+            joinRoom();
         }
-      </div>
-      <div className='justify-content-center'>
-        {typingUsers.map(user => <p key={user} className='loading mr-1'>{user.message}</p>)}
-      </div>
-    </div>
+    }, [connection]);
 
-  )
+    const joinRoom = async () => {
+        dispatch(toggleSpinner());
+
+        // Check if the connection is in the Disconnected state before starting it.
+        if (connection.state === HubConnectionState.Disconnected) {
+            connection.on("ReceiveMessage", (user, message) => {
+                dispatch(handleReceivedMessage(user, message));
+            });
+
+            connection.on("UsersInRoom", (users) => {
+                dispatch(setUsers(users));
+            });
+
+            await connection.start();
+            await connection.invoke("JoinRoom", { user, room });
+            dispatch(toggleSpinner());
+        }
+    };
+
+
+    return (
+        <div className='PageChatRoom'>
+            <Row>
+                <Col>
+                    <Button
+                        onClick={() => {
+                            dispatch(stopSignalRConnection());
+                            navigate("/");
+                        }}
+                        className="justify-content-end"
+                    >
+                        Leave Room
+                    </Button>
+                </Col>
+                <Col>
+                    <p>Chatting as {user}</p>
+                </Col>
+            </Row>
+            <br />
+            <br />
+            <div className='d-flex'>
+                {!apiIsLoading &&
+                    <>
+                        <UserList />
+                        <ChatBox />
+                    </>
+                }
+            </div>
+            <div className='justify-content-center'>
+                {typingUsers.map(user => <p key={user} className='loading mr-1'>{user.message}</p>)}
+            </div>
+        </div>
+    )
 }
