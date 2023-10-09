@@ -1,40 +1,27 @@
-import axios from 'axios';
 import React, { useRef } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { toggleSpinner } from '../../../reducers/spinnerSlice';
+import { createChatRoom, sendNewRoom } from '../../../reducers/lobbySlice';
 import { toast } from 'react-toastify';
 
-export default function CreateChatRoom({ isOpen, toggleModal, sendNewRoom }) {
+export default function CreateChatRoom({ isOpen, toggleModal }) {
     // Hooks
     const roomName = useRef();
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleClose = async (event) => {
-
         event.preventDefault();
         let request = { name: roomName.current.value };
-        dispatch(toggleSpinner());
-
-        let createChatRoomResponse;
         try {
-            createChatRoomResponse = await createChatRoom(request);
+            let response = await dispatch(createChatRoom(request));
+            navigate(`room/${response.data.name}/${response.data.id}`);
+            toggleModal();
         } catch (error) {
-            toast(error.response.data);
-            dispatch(toggleSpinner()); 
-            return
+            toast(error.message);
         }
 
-        await sendNewRoom(roomName.current.value);
-        dispatch(toggleSpinner());
-        navigate(`room/${createChatRoomResponse.data.name}/${createChatRoomResponse.data.id}`);
-        toggleModal();
-    }
-
-    const createChatRoom = (request) => {
-        return axios.post(`${process.env.REACT_APP_API_URL}/api/CreateChatRoom`, request);
     }
 
     return (

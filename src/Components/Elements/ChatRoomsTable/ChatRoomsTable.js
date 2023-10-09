@@ -1,74 +1,49 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Col, Row } from 'react-bootstrap';
 import Table from 'react-bootstrap/Table';
+import CreateChatRoom from '../CreateChatRoom/CreateChatRoom';
+import { Button, Col, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toggleSpinner } from '../../../reducers/spinnerSlice';
-import { toast } from 'react-toastify';
-import CreateChatRoom from '../CreateChatRoom/CreateChatRoom';
-import { HubConnectionBuilder } from '@microsoft/signalr';
-import BrowsingUsers from '../BrowsingUsers/BrowsingUsers';
+import { initializeSignalRConnectionLobby, setChatRooms, setUsersLobby, stopSignalRConnectionLobby } from '../../../reducers/lobbySlice';
+import { HubConnectionState } from '@microsoft/signalr';
+
 
 export default function ChatRoomsTable() {
-    const [isOpen, setIsOpen] = useState(false);
-    const name = useSelector(state => state.user.name)
-    const [chatRooms, setChatRooms] = useState([]);
-    const [connection, setConnection] = useState(null);
-    const [users, setUsers] = useState([]);
-    const navigate = useNavigate();
+    // Redux
     const dispatch = useDispatch();
+    const name = useSelector(state => state.user.name);
+    const chatRooms = useSelector(state => state.lobby.rooms);
+    const connection = useSelector(state => state?.lobby?.connection ?? null);
 
-    const closeConnection = async () => {
-        try {
-            if (connection) {
-                await connection.stop();
-                // Set the connection to null after stopping it
-                setConnection(null);
-            }
-        } catch (error) {
-            toast(error.message);
-        }
-    };
-
+    // Hooks
+    const [isOpen, setIsOpen] = useState(false);
+    const navigate = useNavigate();
     useEffect(() => {
-        try {
-            const newConnection = new HubConnectionBuilder()
-                .withUrl(`${process.env.REACT_APP_API_URL}/lobby`)
-                .withAutomaticReconnect()
-                .build();
-
-            setConnection(newConnection);
-        } catch (error) {
-            toast(error.message);
-        }
+        dispatch(initializeSignalRConnectionLobby());
         return () => {
-            closeConnection();
+            dispatch(stopSignalRConnectionLobby());
         }
     }, []);
 
     useEffect(() => {
         if (connection) {
-            joinRoom();
+            joinLobby();
         }
     }, [connection])
 
-    const joinRoom = async () => {
-        dispatch(toggleSpinner());
-        connection.on("ActiveRooms", (rooms) => {
-            setChatRooms(rooms);
-        });
+    const joinLobby= async () => {
+        if (connection.state === HubConnectionState.Disconnected) {
+            connection.on("ActiveRooms", (rooms) => {
+                dispatch(setChatRooms(rooms));
+            });
+            connection.on("UsersInRoom", (users) => {
+                dispatch(setUsersLobby(users));
+            });
 
-        connection.on("UsersInRoom", (users) => {
-            setUsers(users);
-        });
-
-        connection.onclose(e => {
-            setConnection(null);
-        });
-
-        await connection.start();
-        await connection.invoke("JoinLobby", { user: name, room: "Lobby" });
-        dispatch(toggleSpinner());
+            await connection.start();
+            await connection.invoke("JoinLobby", { user: name, room: "Lobby" });
+        }
     }
 
     const joinChatRoom = (chatroom) => {
@@ -86,16 +61,6 @@ export default function ChatRoomsTable() {
                 <td><Button onClick={() => joinChatRoom(chatroom)}>Join Room</Button></td>
             </tr>
         )
-    }
-    
-    const sendNewRoom = async (roomName) => {
-        try {
-
-            await connection.invoke("NewRoomCreated")
-        } catch (error) {
-            toast(error.message);
-            dispatch(toggleSpinner());
-        }
     }
 
     return (
@@ -123,9 +88,8 @@ export default function ChatRoomsTable() {
                     {mapChatRooms()}
                 </tbody>
             </Table>
-            <BrowsingUsers users={users} />
             {/* Create Chat Room Modal */}
-            <CreateChatRoom isOpen={isOpen} toggleModal={() => toggleModal()} sendNewRoom={sendNewRoom} />
+            <CreateChatRoom isOpen={isOpen} toggleModal={() => toggleModal()} />
         </>
     )
 }
