@@ -76,7 +76,7 @@ export const ChatBox = () => {
                                         onKeyDown={(e) => {
                                             if (e.code === "Enter" && regExp.test(message.current.value)) {
                                                 e.preventDefault();
-                                                sendMessage(message.current.value);
+                                                send(e);
                                                 message.current.value = "";
                                                 return false;
                                             }
@@ -87,11 +87,11 @@ export const ChatBox = () => {
                                         }}
                                         onBlur={(e) => {
                                             e.preventDefault();
-                                            userStoppedTyping();
+                                            dispatch(userStoppedTyping());
                                         }}
                                         onFocus={(e) => {
                                             e.preventDefault();
-                                            if (regExp.test(message.current.value)) userIsTyping();
+                                            if (regExp.test(message.current.value)) dispatch(userIsTyping());
                                         }}
                                     />
                                 </InputGroup>

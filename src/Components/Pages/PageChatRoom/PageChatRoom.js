@@ -74,18 +74,14 @@ export const PageChatRoom = () => {
                     </Button>
                 </Col>
                 <Col>
-                    <p>Chatting as {user}</p>
+                    <h1>Chatting as {user}</h1>
                 </Col>
             </Row>
             <br />
             <br />
             <div className='d-flex'>
-                {!apiIsLoading &&
-                    <>
-                        <UserList />
-                        <ChatBox />
-                    </>
-                }
+                <UserList />
+                <ChatBox />
             </div>
             <div className='justify-content-center'>
                 {typingUsers.map(user => <p key={user} className='loading mr-1'>{user.message}</p>)}
