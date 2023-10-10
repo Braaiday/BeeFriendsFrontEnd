@@ -1,27 +1,13 @@
 import React, { useRef } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { createChatRoom, sendNewRoom } from '../../../reducers/lobbySlice';
-import { toast } from 'react-toastify';
 
-export default function CreateChatRoom({ isOpen, toggleModal }) {
+export default function CreateChatRoomModal({ isOpen, toggleModal }) {
     // Hooks
     const roomName = useRef();
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     const handleClose = async (event) => {
         event.preventDefault();
-        let request = { name: roomName.current.value };
-        try {
-            let response = await dispatch(createChatRoom(request));
-            navigate(`room/${response.data.name}/${response.data.id}`);
-            toggleModal();
-        } catch (error) {
-            toast(error.message);
-        }
-
+        toggleModal(roomName.current.value);
     }
 
     return (

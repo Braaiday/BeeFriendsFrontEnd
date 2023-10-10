@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import Table from 'react-bootstrap/Table';
-import CreateChatRoom from '../CreateChatRoom/CreateChatRoom';
 import { Button, Col, Row } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import CreateChatRoomModal from '../CreateChatRoomModal/CreateChatRoomModal';
+import { createChatRoom } from '../../../reducers/lobbySlice';
 
 export default function ChatRoomsTable() {
     // Redux
+    const dispatch = useDispatch();
     const name = useSelector(state => state.user.name);
     const chatRooms = useSelector(state => state.lobby.rooms);
 
@@ -18,10 +20,6 @@ export default function ChatRoomsTable() {
         navigate(`room/${chatroom.name}/${chatroom.id}`)
     }
 
-    function toggleModal() {
-        setIsOpen(!isOpen);
-    }
-
     function mapChatRooms() {
         return chatRooms.map(chatroom =>
             <tr key={chatroom.id}>
@@ -29,6 +27,13 @@ export default function ChatRoomsTable() {
                 <td><Button onClick={() => joinChatRoom(chatroom)}>Join Room</Button></td>
             </tr>
         )
+    }
+
+    async function toggleModal(roomName) {
+        setIsOpen(!isOpen);
+        let response = await dispatch(createChatRoom(roomName));
+        navigate(`room/${response.data.name}/${response.data.id}`);
+
     }
 
     return (
@@ -57,7 +62,7 @@ export default function ChatRoomsTable() {
                 </tbody>
             </Table>
             {/* Create Chat Room Modal */}
-            <CreateChatRoom isOpen={isOpen} toggleModal={() => toggleModal()} />
+            <CreateChatRoomModal isOpen={isOpen} toggleModal={toggleModal} />
         </>
     )
 }

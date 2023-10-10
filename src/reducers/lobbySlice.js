@@ -64,25 +64,24 @@ export const setChatRooms = (rooms) => async (dispatch, getState) => {
 
 export const sendNewRoom = () => async (dispatch, getState) => {
     const { connection } = getState().lobby;
-    dispatch(toggleSpinner());
     try {
         await connection.invoke("NewRoomCreated")
-        dispatch(toggleSpinner());
     } catch (error) {
         toast(error.message);
         dispatch(toggleSpinner());
     }
 }
 
-export const createChatRoom = (request) => async (dispatch, getState) => {
+export const createChatRoom = (roomName) => async (dispatch, getState) => {
     dispatch(toggleSpinner());
     try {
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/CreateChatRoom`, request);
+        const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/CreateChatRoom`, { name: roomName });
         await dispatch(sendNewRoom(response.data.name));
         dispatch(toggleSpinner());
         return response;
     } catch (error) {
         toast(error.message);
+        dispatch(toggleSpinner());
     }
 }
 
