@@ -12,6 +12,13 @@ export default function PageLobby() {
   const connection = useSelector(state => state?.lobby?.connection ?? null);
 
   useEffect(() => {
+    dispatch(initializeSignalRConnectionLobby());
+    return () => {
+      dispatch(stopSignalRConnectionLobby());
+    }
+  }, []);
+
+  useEffect(() => {
     if (connection) {
       joinLobby();
     }
@@ -30,13 +37,6 @@ export default function PageLobby() {
       await connection.invoke("JoinLobby", { user: name, room: "Lobby" });
     }
   }
-
-  useEffect(() => {
-    dispatch(initializeSignalRConnectionLobby());
-    return () => {
-      dispatch(stopSignalRConnectionLobby());
-    }
-  }, []);
 
   return (
     <div>
