@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from "react-toastify";
 import { PageChatRoom } from "./Components/Pages/PageChatRoom/PageChatRoom";
 import Layout from "./Components/Layout/Layout";
-import PageLobby from "./Components/Pages/PageHome/PageLobby";
+import PageLobby from "./Components/Pages/PageLobby/PageLobby";
 
 function App() {
   const { theme } = useTheme();
