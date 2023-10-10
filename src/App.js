@@ -6,6 +6,7 @@ import { ToastContainer } from "react-toastify";
 import { PageChatRoom } from "./Components/Pages/PageChatRoom/PageChatRoom";
 import Layout from "./Components/Layout/Layout";
 import PageLobby from "./Components/Pages/PageLobby/PageLobby";
+import { PageNotFound } from "./Components/Pages/PageNotFound/PageNotFound";
 
 function App() {
   const { theme } = useTheme();
@@ -21,7 +22,7 @@ function App() {
               <Route index element={<PageLobby />} />
               <Route path="/room/:room/:id" element={<PageChatRoom />} />
             </Route>
-            <Route path="*" element={<div>No Match</div>} />
+            <Route path="*" element={<PageNotFound />} />
           </Routes>
         </BrowserRouter>
       </div>

@@ -7,7 +7,7 @@ import { Col, Navbar, NavbarBrand, Row } from 'react-bootstrap';
 export default function AppHeader() {
   return (
 
-    <Navbar color="faded" light>
+    <Navbar>
       <NavbarBrand>
         <NavLink to="/" className="justify-content-left" ><img style={{ width: "150px", height: "150px" }} src={image} /></NavLink>
       </NavbarBrand>

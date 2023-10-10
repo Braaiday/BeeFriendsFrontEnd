@@ -43,10 +43,15 @@ export default function ChatRoomsTable() {
                     <h1>Chat Rooms</h1>
                 </Col>
                 <Col>
-                    <p>Chatting as {name}</p>
+                    <div className='d-flex align-items-center justify-content-center'>
+                        <h1>Chatting as {name}</h1>
+
+                    </div>
                 </Col>
                 <Col>
-                    <Button onClick={() => setIsOpen(true)}>Create Room</Button>
+                    <div className='d-flex align-items-end justify-content-end'>
+                        <Button onClick={() => setIsOpen(true)}>Create Room</Button>
+                    </div>
                 </Col>
             </Row>
 
