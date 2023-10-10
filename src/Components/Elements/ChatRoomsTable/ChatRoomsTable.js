@@ -1,50 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import CreateChatRoom from '../CreateChatRoom/CreateChatRoom';
 import { Button, Col, Row } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { toggleSpinner } from '../../../reducers/spinnerSlice';
-import { initializeSignalRConnectionLobby, setChatRooms, setUsersLobby, stopSignalRConnectionLobby } from '../../../reducers/lobbySlice';
-import { HubConnectionState } from '@microsoft/signalr';
-
 
 export default function ChatRoomsTable() {
     // Redux
-    const dispatch = useDispatch();
     const name = useSelector(state => state.user.name);
     const chatRooms = useSelector(state => state.lobby.rooms);
-    const connection = useSelector(state => state?.lobby?.connection ?? null);
 
     // Hooks
     const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
-    useEffect(() => {
-        dispatch(initializeSignalRConnectionLobby());
-        return () => {
-            dispatch(stopSignalRConnectionLobby());
-        }
-    }, []);
-
-    useEffect(() => {
-        if (connection) {
-            joinLobby();
-        }
-    }, [connection])
-
-    const joinLobby= async () => {
-        if (connection.state === HubConnectionState.Disconnected) {
-            connection.on("ActiveRooms", (rooms) => {
-                dispatch(setChatRooms(rooms));
-            });
-            connection.on("UsersInRoom", (users) => {
-                dispatch(setUsersLobby(users));
-            });
-
-            await connection.start();
-            await connection.invoke("JoinLobby", { user: name, room: "Lobby" });
-        }
-    }
 
     const joinChatRoom = (chatroom) => {
         navigate(`room/${chatroom.name}/${chatroom.id}`)

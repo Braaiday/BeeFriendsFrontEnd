@@ -1,11 +1,11 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import PageHome from "./Components/Pages/PageHome/PageHome";
 import AppSpinner from "./Components/Elements/AppSpinner/AppSpinner";
 import useTheme from "./Style/ThemeContext/useTheme";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from "react-toastify";
 import { PageChatRoom } from "./Components/Pages/PageChatRoom/PageChatRoom";
 import Layout from "./Components/Layout/Layout";
+import PageLobby from "./Components/Pages/PageHome/PageLobby";
 
 function App() {
   const { theme } = useTheme();
@@ -18,7 +18,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Layout />}>
-              <Route index element={<PageHome />} />
+              <Route index element={<PageLobby />} />
               <Route path="/room/:room/:id" element={<PageChatRoom />} />
             </Route>
             <Route path="*" element={<div>No Match</div>} />
