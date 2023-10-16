@@ -21,7 +21,6 @@ export default function ChatRoomsTable() {
     }
 
     function mapChatRooms() {
-        if (chatRooms.length == 0) return <tr><td><Spinner /></td></tr>
         return chatRooms.map(chatroom =>
             <tr key={chatroom.id}>
                 <td>{chatroom.name}</td>
