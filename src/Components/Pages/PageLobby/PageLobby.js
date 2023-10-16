@@ -4,6 +4,7 @@ import BrowsingUsers from '../../Elements/BrowsingUsers/BrowsingUsers'
 import { useDispatch, useSelector } from 'react-redux';
 import { HubConnectionState } from '@microsoft/signalr';
 import { initializeSignalRConnectionLobby, setChatRooms, setUsersLobby, stopSignalRConnectionLobby } from '../../../reducers/lobbySlice';
+import { Col, Row } from 'react-bootstrap';
 
 export default function PageLobby() {
   // Redux
@@ -39,9 +40,15 @@ export default function PageLobby() {
   }
 
   return (
-    <div>
-      <ChatRoomsTable />
-      <BrowsingUsers />
+    <div className='PageLobby'>
+      <Row >
+        <Col sm="6" md="9">
+          <ChatRoomsTable />
+        </Col>
+        <Col sm="6" md="3">
+          <BrowsingUsers />
+        </Col>
+      </Row>
     </div>
   )
 }

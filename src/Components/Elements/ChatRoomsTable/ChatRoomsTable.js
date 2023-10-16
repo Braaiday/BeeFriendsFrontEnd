@@ -44,8 +44,7 @@ export default function ChatRoomsTable() {
                 </Col>
                 <Col>
                     <div className='d-flex align-items-center justify-content-center'>
-                        <h1>Chatting as {name}</h1>
-
+                        <h3>Chatting as {name}</h3>
                     </div>
                 </Col>
                 <Col>

@@ -70,7 +70,7 @@ export const PageChatRoom = () => {
     return (
         <div className='PageChatRoom'>
             <Row>
-                <Col>
+                <Col xs="12" md="3" className='mb-3'>
                     <Button
                         onClick={() => {
                             dispatch(stopSignalRConnection());
@@ -81,21 +81,16 @@ export const PageChatRoom = () => {
                         Leave Room
                     </Button>
                 </Col>
-                <Col>
-                    <h1>Chatting as {user}</h1>
+            </Row>
+            <Row>
+                <Col xs="12" md="3" className='mb-3'>
+                    <UserList />
+                </Col>
+                <Col xs="12" md="9">
+                    <ChatBox />
                 </Col>
             </Row>
-            <br />
-            <br />
-            <div className='chat-container'>
-                <div className='user-list-chat-item'>
-                    <UserList />
-                </div>
-                <div className='chat-box-chat-item'>
-                    <ChatBox />
-                </div>
-            </div>
-            <div className='justify-content-center'>
+            <div>
                 {typingUsers.map(user => <p key={user} className='loading mr-1'>{user.message}</p>)}
             </div>
         </div>

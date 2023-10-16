@@ -5,9 +5,6 @@ import { sendMessage, userIsTyping, userStoppedTyping } from '../../../reducers/
 import { useParams } from 'react-router-dom';
 
 export const ChatBox = () => {
-    // Constants
-    const regExp = /[a-zA-Z]/g;
-
     // Redux
     const dispatch = useDispatch();
     const user = useSelector(state => state.user.name);
@@ -20,18 +17,35 @@ export const ChatBox = () => {
     const messagesEndRef = useRef()
 
     const localmessages = useMemo(() => {
-
         return messages.map((item, i) => {
-            if (item.user === "MyChat Bot") {
-                return <><p key={i}>{item.message}</p></>
-            } else {
-                return <><p key={i}>{`${item.user}: `}{item.message}</p></>
-            }
+            const isUserMessage = item.user === user;
+            const messageClass = isUserMessage ? 'text-start ml-auto' : 'text-end mr-auto';
+            const isBotMessage = item.user === "MyChat Bot";
+
+            return (
+                <div key={i} className={`mb-10 ${messageClass}`}>
+                    {isBotMessage ? (
+                        <Card className='m-1 d-inline-block min-width-class max-width-class'>
+                            <Card.Body>
+                                <p>{item.message}</p>
+                            </Card.Body>
+                        </Card>
+                    ) : (
+                        <Card className='m-1 d-inline-block min-width-class max-width-class'>
+                            <Card.Body>
+                                <p>{isUserMessage ? '' : item.user + ': '}{item.message}</p>
+                            </Card.Body>
+                        </Card>
+                    )}
+                </div>
+            );
         })
     }, [messages])
 
+
     const send = async (event) => {
         event.preventDefault();
+        dispatch(userStoppedTyping());
         dispatch(sendMessage(message.current.value));
         message.current.value = '';
     }
@@ -51,12 +65,19 @@ export const ChatBox = () => {
     }, [localmessages])
 
     return (
-        <Container className='chatbox'>
+        <Container className='Chatbox'>
             <Row>
                 <Col>
                     <Card className='card-max-height'>
                         <Card.Header>
-                            You are chatting in {room}
+                            <Row>
+                                <Col>
+                                    You are chatting in {room}
+                                </Col>
+                                <Col className='text-end'>
+                                    Chatting as {user}
+                                </Col>
+                            </Row>
                         </Card.Header>
                         <Card.Body className='h-75 d-inline-block pb-20 custom-scroll-container'>
                             {localmessages}
@@ -74,7 +95,7 @@ export const ChatBox = () => {
                                         onChange={userIsTypingSomething}
                                         className="custom-text-area"
                                         onKeyDown={(e) => {
-                                            if (e.code === "Enter" && regExp.test(message.current.value)) {
+                                            if (e.code === "Enter" && message.current.value.length > 0) {
                                                 e.preventDefault();
                                                 send(e);
                                                 message.current.value = "";
@@ -91,7 +112,7 @@ export const ChatBox = () => {
                                         }}
                                         onFocus={(e) => {
                                             e.preventDefault();
-                                            if (regExp.test(message.current.value)) {
+                                            if (message.current.value.length > 0) {
                                                 dispatch(userIsTyping());
                                             }
                                         }}

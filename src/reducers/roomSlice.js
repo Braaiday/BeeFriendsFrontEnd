@@ -3,14 +3,16 @@ import { createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
+const initialState = {
+    messages: [],
+    users: [],
+    typingUsers: [],
+    connection: null,
+};
+
 export const roomSlice = createSlice({
     name: 'room',
-    initialState: {
-        messages: [],
-        users: [],
-        typingUsers: [],
-        connection: null,
-    },
+    initialState: initialState,
     reducers: {
         setMessages: (state, action) => {
             state.messages = action.payload
@@ -32,7 +34,10 @@ export const roomSlice = createSlice({
             const { username, message } = action.payload;
             if (message === username + " is typing") state.typingUsers = [...state.typingUsers, { user: username, message }];
             if (message === "") state.typingUsers = state.typingUsers.filter(m => m.user !== username);
-        }
+        },
+        resetState: (state) => {
+            state = initialState;
+        },
     },
 })
 
@@ -58,8 +63,7 @@ export const stopSignalRConnection = () => async (dispatch, getState) => {
     try {
         await connection.stop();
         dispatch(clearConnection());
-        dispatch(setMessages([]));
-        dispatch(setUsers([]));
+        dispatch(resetState());
     } catch (error) {
         toast(error.message);
     }
@@ -119,6 +123,6 @@ export const userStoppedTyping = () => async (dispatch, getState) => {
 }
 
 // Action creators are generated for each case reducer function
-export const { setRoom, setMessages, addMessage, setUsers, setConnection, clearConnection, setTypingUsers } = roomSlice.actions;
+export const { setRoom, setMessages, addMessage, setUsers, setConnection, clearConnection, setTypingUsers, resetState } = roomSlice.actions;
 
 export default roomSlice.reducer

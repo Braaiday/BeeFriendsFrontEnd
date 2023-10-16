@@ -1,4 +1,12 @@
-.chatbox {
+.Chatbox {
+    .min-width-class {
+        min-width: 20%;
+    }
+
+    .max-width-class {
+        max-width: 80%;
+    }
+
     button {
         border: none;
     }

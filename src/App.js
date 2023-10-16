@@ -14,7 +14,7 @@ function App() {
   return (
     <div className={`${theme} w-100 h-100`}>
       <AppSpinner />
-      <ToastContainer />
+      <ToastContainer style={{ zIndex: '10000' }} />
       <div className="App w-100 h-100 p-3">
         <BrowserRouter>
           <Routes>
