@@ -2,14 +2,14 @@
 $white: #ffffff;
 
 $theme-colors: (
-    "light": #080910,
-    "dark": #02182e,
-    "primary": #1f2a34,
-    "secondary": #dc523f,
-    "info": #ebe071,
-    "success": #2fac64,
-    "warning": #e7cc2d,
-    "danger": #f5181d,
+    "light": #051309,
+    "dark": #02281b,
+    "primary": #2a4621,
+    "secondary": #46516b,
+    "info": #c46022,
+    "success": #1a9914,
+    "warning": #f4bf17,
+    "danger": #eb0a4b,
 );
 
 $light: map-get($theme-colors, "light");

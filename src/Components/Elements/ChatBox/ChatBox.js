@@ -126,7 +126,6 @@ export const ChatBox = () => {
                                     <div className='emoji-picker'>
                                         <ElementEmojiPicker
                                             onEmojiClick={(value) => onEmojiClick(value)}
-                                            messageInputRef={message}
                                         />
                                     </div>
                                 </InputGroup>

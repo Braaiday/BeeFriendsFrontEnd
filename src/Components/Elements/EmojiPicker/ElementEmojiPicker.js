@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import EmojiPicker from 'emoji-picker-react';
 import { EmojiSmile } from 'react-bootstrap-icons';
 
-const ElementEmojiPicker = ({ onEmojiClick, messageInputRef }) => {
+const ElementEmojiPicker = ({ onEmojiClick }) => {
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-    
     return (
         <div className='ElementEmojiPicker'>
             {showEmojiPicker &&
