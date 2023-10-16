@@ -3,6 +3,7 @@ import { Card, Col, Container, Form, InputGroup, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { sendMessage, userIsTyping, userStoppedTyping } from '../../../reducers/roomSlice';
 import { useParams } from 'react-router-dom';
+import ElementEmojiPicker from '../EmojiPicker/ElementEmojiPicker';
 
 export const ChatBox = () => {
     // Redux
@@ -62,7 +63,12 @@ export const ChatBox = () => {
 
     useEffect(() => {
         scrollToBottom();
-    }, [localmessages])
+    }, [localmessages]);
+
+    const onEmojiClick = (value) => {
+        message.current.value = `${message.current.value}${value.emoji}`
+        message.current.focus();
+    }
 
     return (
         <Container className='Chatbox'>
@@ -117,6 +123,12 @@ export const ChatBox = () => {
                                             }
                                         }}
                                     />
+                                    <div className='emoji-picker'>
+                                        <ElementEmojiPicker
+                                            onEmojiClick={(value) => onEmojiClick(value)}
+                                            messageInputRef={message}
+                                        />
+                                    </div>
                                 </InputGroup>
                             </Form>
                         </Card.Footer>
