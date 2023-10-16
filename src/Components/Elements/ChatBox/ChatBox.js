@@ -86,8 +86,8 @@ export const ChatBox = () => {
                         <Card.Footer>
                             <Form onSubmit={send}>
                                 <InputGroup>
-                                    <InputGroup.Text ><button type='submit'>Send</button></InputGroup.Text>
                                     <Form.Control
+                                        placeholder='Message'
                                         as="textarea"
                                         aria-label="With textarea"
                                         required
