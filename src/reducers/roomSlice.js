@@ -26,15 +26,13 @@ export const roomSlice = createSlice({
         },
         addMessage: (state, action) => {
             const { username, message } = action.payload;
-            if (message === username + " is typing") {
-                state.typingUsers = [...state.typingUsers, { user: username, message }];
-            } else if (message === "") {
-                state.typingUsers = state.typingUsers.filter(m => m.user !== username);
-            } else {
-                state.messages = [...state.messages, { user: username, message }];
-                state.typingUsers = state.typingUsers.filter(m => m.user !== username);
-            }
+            state.messages = [...state.messages, { user: username, message }];
         },
+        setTypingUsers: (state, action) => {
+            const { username, message } = action.payload;
+            if (message === username + " is typing") state.typingUsers = [...state.typingUsers, { user: username, message }];
+            if (message === "") state.typingUsers = state.typingUsers.filter(m => m.user !== username);
+        }
     },
 })
 
@@ -94,6 +92,14 @@ export const handleReceivedMessage = (username, message) => (dispatch) => {
     dispatch(addMessage({ username, message }));
 };
 
+export const handleReceivedUserTyping = (username, message) => (dispatch) => {
+    dispatch(setTypingUsers({ username, message }))
+};
+
+export const handleReceivedUserStoppedTyping = (username, message) => (dispatch) => {
+    dispatch(setTypingUsers({ username, message }))
+};
+
 export const userIsTyping = () => async (dispatch, getState) => {
     const { connection } = getState().room;
     try {
@@ -113,6 +119,6 @@ export const userStoppedTyping = () => async (dispatch, getState) => {
 }
 
 // Action creators are generated for each case reducer function
-export const { setRoom, setMessages, addMessage, setUsers, setConnection, clearConnection } = roomSlice.actions;
+export const { setRoom, setMessages, addMessage, setUsers, setConnection, clearConnection, setTypingUsers } = roomSlice.actions;
 
 export default roomSlice.reducer

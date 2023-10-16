@@ -91,7 +91,9 @@ export const ChatBox = () => {
                                         }}
                                         onFocus={(e) => {
                                             e.preventDefault();
-                                            if (regExp.test(message.current.value)) dispatch(userIsTyping());
+                                            if (regExp.test(message.current.value)) {
+                                                dispatch(userIsTyping());
+                                            }
                                         }}
                                     />
                                 </InputGroup>

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import UserList from '../../Elements/UserList/UserList';
 import { Button, Col, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { getChatHistory, handleReceivedMessage, initializeSignalRConnection, setUsers, stopSignalRConnection } from '../../../reducers/roomSlice';
+import { getChatHistory, handleReceivedMessage, handleReceivedUserStoppedTyping, handleReceivedUserTyping, initializeSignalRConnection, setUsers, stopSignalRConnection } from '../../../reducers/roomSlice';
 import { toggleSpinner } from '../../../reducers/spinnerSlice';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
@@ -48,6 +48,14 @@ export const PageChatRoom = () => {
                 dispatch(handleReceivedMessage(user, message));
             });
 
+            connection.on("userIsTyping", (user, message) => {
+                dispatch(handleReceivedUserTyping(user, message));
+            });
+
+            connection.on("userStoppedTyping", (user, message) => {
+                dispatch(handleReceivedUserStoppedTyping(user, message));
+            });
+
             connection.on("UsersInRoom", (users) => {
                 dispatch(setUsers(users));
             });
@@ -79,9 +87,13 @@ export const PageChatRoom = () => {
             </Row>
             <br />
             <br />
-            <div className='d-flex'>
-                <UserList />
-                <ChatBox />
+            <div className='chat-container'>
+                <div className='user-list-chat-item'>
+                    <UserList />
+                </div>
+                <div className='chat-box-chat-item'>
+                    <ChatBox />
+                </div>
             </div>
             <div className='justify-content-center'>
                 {typingUsers.map(user => <p key={user} className='loading mr-1'>{user.message}</p>)}
