@@ -3,17 +3,19 @@ import { createSlice } from '@reduxjs/toolkit'
 export const spinnerSlice = createSlice({
     name: 'spinner',
     initialState: {
-        isLoading: false,
+        requestCount: 0, // Initialize the count to 0
     },
     reducers: {
-        toggleSpinner: (state, action) => {
-            state.isLoading = !state.isLoading 
+        incrementRequestCount: (state) => {
+            state.requestCount += 1;
         },
-      
+        decrementRequestCount: (state) => {
+            state.requestCount -= 1;
+        },
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { toggleSpinner} = spinnerSlice.actions
+export const { incrementRequestCount, decrementRequestCount } = spinnerSlice.actions
 
 export default spinnerSlice.reducer

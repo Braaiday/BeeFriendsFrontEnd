@@ -3,7 +3,7 @@ import UserList from '../../Elements/UserList/UserList';
 import { Button, Col, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { getChatHistory, handleReceivedMessage, handleReceivedUserStoppedTyping, handleReceivedUserTyping, initializeSignalRConnection, setUsers, stopSignalRConnection } from '../../../reducers/roomSlice';
-import { toggleSpinner } from '../../../reducers/spinnerSlice';
+import { decrementRequestCount, incrementRequestCount } from '../../../reducers/spinnerSlice';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { ChatBox } from '../../Elements/ChatBox/ChatBox';
@@ -12,7 +12,6 @@ import { HubConnectionState } from '@microsoft/signalr';
 export const PageChatRoom = () => {
     //Redux 
     const dispatch = useDispatch();
-    const apiIsLoading = useSelector(state => state.spinner.isLoading);
     const typingUsers = useSelector(state => state.room.typingUsers);
     const user = useSelector(state => state.user.name ?? localStorage.getItem('name'));
     const connection = useSelector(state => state?.room?.connection ?? null);
@@ -40,7 +39,7 @@ export const PageChatRoom = () => {
     }, [connection]);
 
     const joinRoom = async () => {
-        dispatch(toggleSpinner());
+        dispatch(incrementRequestCount());
 
         // Check if the connection is in the Disconnected state before starting it.
         if (connection.state === HubConnectionState.Disconnected) {
@@ -62,7 +61,7 @@ export const PageChatRoom = () => {
 
             await connection.start();
             await connection.invoke("JoinRoom", { user, room });
-            dispatch(toggleSpinner());
+            dispatch(decrementRequestCount());
         }
     };
 

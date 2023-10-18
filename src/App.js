@@ -7,9 +7,16 @@ import { PageChatRoom } from "./Components/Pages/PageChatRoom/PageChatRoom";
 import Layout from "./Components/Layout/Layout";
 import PageLobby from "./Components/Pages/PageLobby/PageLobby";
 import { PageNotFound } from "./Components/Pages/PageNotFound/PageNotFound";
+import { configureAxios } from "./API/Api";
+import { useDispatch } from "react-redux";
+import { decrementRequestCount, incrementRequestCount } from "./reducers/spinnerSlice";
 
 function App() {
   const { theme } = useTheme();
+  const dispatch = useDispatch();
+
+  // Configuring axios interceptors for toggling the spinner
+  configureAxios(() => dispatch(incrementRequestCount()), () => dispatch(decrementRequestCount()));
 
   return (
     <div className={`${theme} w-100 h-100`}>

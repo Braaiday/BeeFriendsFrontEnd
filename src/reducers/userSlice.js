@@ -1,7 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
-import { toggleSpinner } from './spinnerSlice';
-import { toast } from 'react-toastify';
+import { AxiosInstance } from '../API/Api';
 
 export const userSlice = createSlice({
   name: 'user',
@@ -17,23 +15,15 @@ export const userSlice = createSlice({
 
 // Add a thunk action to save the username
 export const saveUsername = (name) => async (dispatch) => {
-  dispatch(toggleSpinner());
 
-  try {
-    const response = await axios.post(
-      `${process.env.REACT_APP_API_URL}/api/SaveUsername`,
-      name,
-      {
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
-    localStorage.setItem('name', name);
-    dispatch(setUser(name));
-    dispatch(toggleSpinner());
-  } catch (error) {
-    dispatch(toggleSpinner());
-    toast(error.message);
-  }
+  const response = await AxiosInstance.post('/api/SaveUsername', name,
+    {
+      headers: { 'Content-Type': 'application/json' },
+    }
+  );
+  localStorage.setItem('name', name);
+  dispatch(setUser(name));
+
 };
 
 export const { setUser } = userSlice.actions;

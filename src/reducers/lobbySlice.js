@@ -1,8 +1,8 @@
 import { HubConnectionBuilder } from '@microsoft/signalr'
 import { createSlice } from '@reduxjs/toolkit'
 import { toast } from 'react-toastify'
-import { toggleSpinner } from './spinnerSlice'
-import axios from 'axios'
+import { AxiosInstance } from '../API/Api'
+import { decrementRequestCount, incrementRequestCount } from './spinnerSlice'
 
 export const roomSlice = createSlice({
     name: 'lobby',
@@ -32,16 +32,16 @@ export const { setRoomsLooby, setUsersLobby, setConnectionLobby, clearConnection
 
 // Thunk action to initialize and start the SignalR connection
 export const initializeSignalRConnectionLobby = () => async (dispatch, getState) => {
-    dispatch(toggleSpinner());
+    dispatch(incrementRequestCount());
     try {
         const newConnection = new HubConnectionBuilder()
             .withUrl(`${process.env.REACT_APP_API_URL}/lobby`)
             .withAutomaticReconnect()
             .build();
         dispatch(setConnectionLobby(newConnection));
-        dispatch(toggleSpinner());
+        dispatch(decrementRequestCount());
     } catch (error) {
-        dispatch(toggleSpinner());
+        dispatch(decrementRequestCount());
         toast(error.message);
     }
 };
@@ -68,21 +68,13 @@ export const sendNewRoom = () => async (dispatch, getState) => {
         await connection.invoke("NewRoomCreated")
     } catch (error) {
         toast(error.message);
-        dispatch(toggleSpinner());
     }
 }
 
 export const createChatRoom = (roomName) => async (dispatch, getState) => {
-    dispatch(toggleSpinner());
-    try {
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/CreateChatRoom`, { name: roomName });
-        await dispatch(sendNewRoom(response.data.name));
-        dispatch(toggleSpinner());
-        return response;
-    } catch (error) {
-        toast(error.message);
-        dispatch(toggleSpinner());
-    }
+    const response = await AxiosInstance.post(`${process.env.REACT_APP_API_URL}/api/CreateChatRoom`, { name: roomName });
+    await dispatch(sendNewRoom(response.data.name));
+    return response;
 }
 
 export default roomSlice.reducer

@@ -1,7 +1,7 @@
 import { HubConnectionBuilder } from '@microsoft/signalr'
 import { createSlice } from '@reduxjs/toolkit'
-import axios from 'axios'
-import { toast } from 'react-toastify'
+import { toast } from 'react-toastify';
+import { AxiosInstance } from '../API/Api';
 
 const initialState = {
     messages: [],
@@ -70,15 +70,11 @@ export const stopSignalRConnection = () => async (dispatch, getState) => {
 };
 
 export const getChatHistory = (roomId) => async (dispatch, getState) => {
-    axios.post(`${process.env.REACT_APP_API_URL}/api/GetChatHistory`, { Id: roomId })
+    AxiosInstance.post(`${process.env.REACT_APP_API_URL}/api/GetChatHistory`, { Id: roomId })
         .then((response) => {
             let messages = response.data.map((item) => { return { message: item.userMessage, user: item.user } })
             dispatch(setMessages(messages));
-
         })
-        .catch((error) => {
-            toast(error.message);
-        });
 }
 
 export const sendMessage = (message) => async (dispatch, getState) => {
