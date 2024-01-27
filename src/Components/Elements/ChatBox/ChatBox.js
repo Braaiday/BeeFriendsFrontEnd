@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef } from 'react';
-import { Card, Col, Container, Form, InputGroup, Row } from 'react-bootstrap';
+import { Button, Card, Col, Container, Form, InputGroup, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { sendMessage, userIsTyping, userStoppedTyping } from '../../../reducers/roomSlice';
 import { useParams } from 'react-router-dom';
@@ -123,6 +123,9 @@ export const ChatBox = () => {
                                             }
                                         }}
                                     />
+                                    <Button onClick={send}>
+                                        Send
+                                    </Button>
                                     <div className='emoji-picker'>
                                         <ElementEmojiPicker
                                             onEmojiClick={(value) => onEmojiClick(value)}

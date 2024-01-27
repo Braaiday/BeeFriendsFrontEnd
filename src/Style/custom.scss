@@ -1,16 +1,3 @@
-//Themes
-div.dark {
-    @import './Themes/dark.scss';
-
-}
-
-div.light {
-    @import './Themes/light.scss';
-}
-
-//Highest Level styles
-@import "./index.scss";
-
 // Pages Custom CSS
 @import "../Components/Pages/PageChatRoom/PageChatRoom.scss";
 @import "../Components/Pages/PageLobby/PageLobby.scss";

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Table from 'react-bootstrap/Table';
-import { Button, Col, Row, Spinner } from 'react-bootstrap';
+import { Button, Col, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import CreateChatRoomModal from '../CreateChatRoomModal/CreateChatRoomModal';

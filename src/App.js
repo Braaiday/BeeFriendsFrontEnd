@@ -11,7 +11,7 @@ import { configureAxios } from "./API/Api";
 import { useDispatch } from "react-redux";
 import { decrementRequestCount, incrementRequestCount } from "./reducers/spinnerSlice";
 
-function App() {
+export const App = () => {
   const { theme } = useTheme();
   const dispatch = useDispatch();
 
@@ -19,10 +19,10 @@ function App() {
   configureAxios(() => dispatch(incrementRequestCount()), () => dispatch(decrementRequestCount()));
 
   return (
-    <div className={`${theme} w-100 h-100`}>
+    <div className={theme}>
       <AppSpinner />
-      <ToastContainer style={{ zIndex: '10000' }} />
-      <div className="App w-100 h-100 p-3">
+      <ToastContainer />
+      <div className="App">
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Layout />}>

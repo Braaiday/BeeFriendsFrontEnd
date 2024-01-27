@@ -1,0 +1,29 @@
+//Themes
+div.dark {
+    @import './ThemesColorPallete/dark.scss';
+    @import "custom.scss";
+
+    width: 100%;
+    height: 100%;
+}
+
+div.light {
+    @import './ThemesColorPallete/light.scss';
+    @import "custom.scss";
+
+    width: 100%;
+    height: 100%;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body,
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}

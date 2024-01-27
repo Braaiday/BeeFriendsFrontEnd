@@ -1,0 +1,33 @@
+/* make the customizations */
+$white: #ffffff;
+
+$theme-colors: (
+    "light": #cbd4f4,
+    "dark": #0e100e,
+    "primary": #22269e,
+    "secondary": #fe100e,
+    "info": #ee3d94,
+    "success": #049f5d,
+    "warning": #e0ca04,
+    "danger": #ee1e01,
+    "text-color": #161618,
+    "background-color": #cbd4f4,
+);
+
+$light: map-get($theme-colors, "light");
+$dark: map-get($theme-colors, "dark");
+$primary: map-get($theme-colors, "primary");
+$secondary: map-get($theme-colors, "secondary");
+$info: map-get($theme-colors, "info");
+$success: map-get($theme-colors, "success");
+$warning: map-get($theme-colors, "warning");
+$danger: map-get($theme-colors, "danger");
+$text-color: map-get($theme-colors, "text-color");
+$background-color: map-get($theme-colors, "background-color");
+
+.App {
+    background-color: $background-color;
+    color: $text-color;
+    padding: 3px;
+    overflow: scroll;
+}
